@@ -1,9 +1,10 @@
+# -*- coding: utf-8 -*-
 """Unit tests for data classes."""
 
-import pytest
 from pathlib import Path
 
-from tool_wizard.models.data_classes import GenerationResult, Tool, ValidationResult
+from tool_wizard.models.data_classes import (GenerationResult, Tool,
+                                             ValidationResult)
 
 
 class TestTool:
@@ -12,16 +13,16 @@ class TestTool:
     def test_tool_creation(self) -> None:
         """Test creating a Tool instance."""
         tool = Tool(
-            tool_name="test_tool",
-            description="A test tool",
-            author="Test Author",
-            input_types=["double"],
-            output_types=["figure"],
-            language="matlab",
+            tool_name='test_tool',
+            description='A test tool',
+            author='Test Author',
+            input_types=['double'],
+            output_types=['figure'],
+            language='matlab',
         )
-        assert tool.tool_name == "test_tool"
-        assert tool.category == "general"
-        assert tool.version == "1.0.0"
+        assert tool.tool_name == 'test_tool'
+        assert tool.category == 'general'
+        assert tool.version == '1.0.0'
 
 
 class TestGenerationResult:
@@ -31,10 +32,10 @@ class TestGenerationResult:
         """Test creating a GenerationResult instance."""
         result = GenerationResult(
             success=True,
-            output_path=Path("/tmp/output"),
+            output_path=Path('/tmp/output'),
         )
         assert result.success is True
-        assert result.output_path == Path("/tmp/output")
+        assert result.output_path == Path('/tmp/output')
         assert result.files_created == []
         assert result.errors == []
 

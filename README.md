@@ -1,6 +1,6 @@
 # Tool Wizard
 
-A modular, extensible framework for generating standardized tool scaffolding, initially for MATLAB. 
+A modular, extensible framework for generating standardized tool scaffolding, initially for MATLAB.
 It follows a strict **Three-Tier Architecture** (Wizard, Templates, Generated) and uses the **Strategy Pattern** to support multiple target languages.
 
 ---
@@ -38,7 +38,7 @@ The project is explicitly divided into three layers (see `docs/adr/ADR.md`):
     -   **Model**: `Tool` dataclass (metadata).
     -   **View**: `CLIView` (user interaction).
     -   **Controller**: `WizardController` (logic flow).
--   **Strategy Pattern**: 
+-   **Strategy Pattern**:
     -   Used for `LanguageAdapter`. defining how to handle file structures for different languages (MATLAB, Python, etc.).
     -   Adapters implement `PLanguageAdapter` protocol.
 

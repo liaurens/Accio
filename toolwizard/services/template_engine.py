@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import logging
 
 from tool_wizard.services.config_manager import ConfigManager

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 
 import dataclasses
 from pathlib import Path
@@ -11,8 +12,8 @@ class Tool:
     input_types: list[str]
     output_types: list[str]
     language: str
-    category: str = "general"
-    version: str = "1.0.0"
+    category: str = 'general'
+    version: str = '1.0.0'
 
 
 @dataclasses.dataclass

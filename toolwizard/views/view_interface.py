@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from typing import Protocol
 
 from tool_wizard.models.data_classes import GenerationResult, Tool

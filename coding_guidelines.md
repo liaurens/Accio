@@ -133,7 +133,7 @@ process_data(config=ProcessConfig(width=100, height=200, depth=50))
 class Config:
     vendor: Final[str] = 'Cyberdyne Systems'
     _value: int | None = None
-    
+
     @property
     def value(self) -> int:
         if self._value is None:
@@ -220,7 +220,7 @@ Use RST format for docstrings:
 def calculate(value: float, precision: int = 2) -> str:
     """
     Calculate and format value.
-    
+
     :param value: Input value to process
     :param precision: Decimal places (default: 2)
     :returns: Formatted string
@@ -270,19 +270,19 @@ classdef MyClass < matlab.mixin.SetGet
         value (1,1) double {mustBePositive} = 1.0
         data (:,:) double = []
     end
-    
+
     methods
         function Obj = MyClass(varargin)
             % Constructor with name-value pairs
             Obj = assign_varargin_2_classprop(Obj, varargin{:});
         end
-        
+
         function result = calculate(Obj, input)
             % Always use Obj. notation with parentheses
             result = Obj.value * input;
         end
     end
-    
+
     methods (Static)
         function obj = create_default()
             % Static methods can return class instance
@@ -311,7 +311,7 @@ function result = compute(x, y, options)
         options.normalize (1,1) logical = false
         options.scale (1,1) double = 1.0
     end
-    
+
     result = sum(x * y);
     if options.normalize
         result = result / options.scale;
@@ -485,12 +485,12 @@ classdef MyClass < matlab.mixin.SetGet
         name (1,:) char = ''
         value (1,1) double {mustBePositive} = 1.0
     end
-    
+
     methods
         function Obj = MyClass(varargin)
             Obj = assign_varargin_2_classprop(Obj, varargin{:});
         end
-        
+
         function result = calculate(Obj, x)
             result = Obj.value * x;
         end

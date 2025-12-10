@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import logging
 import sys
 
@@ -12,5 +13,5 @@ def main() -> int:
     pass
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     sys.exit(main())

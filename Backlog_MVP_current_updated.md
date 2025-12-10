@@ -13,21 +13,21 @@ This reorganized backlog clearly separates concerns between:
 *Foundation and design decisions that affect the entire project*
 
 ### Story 1.1: System Architecture Design
-**As a** development team  
-**I want** a well-designed system architecture  
-**So that** the solution is extensible and maintainable  
+**As a** development team
+**I want** a well-designed system architecture
+**So that** the solution is extensible and maintainable
 **Priority**: 1 (Must Do First)
 
 #### Tasks:
-- [x] 1.1.1 Create project plan with Gantt chart and timeline | gnatt chart needs to be done 
+- [x] 1.1.1 Create project plan with Gantt chart and timeline | gnatt chart needs to be done
 
-    
+
 - [x] 1.1.2 Gather requirements from 1 user and 1 developer | Done for developer user after finishing MVP
 - [x] 1.1.3 Perform MoSCoW analysis
 - [ ] 1.1.4 Create requirements traceability matrix
 - [x] 1.1.5 Design solution with C4-style diagrams | needs adjustment as project changes
 - [ ] 1.1.6 Create Architecture Decision Record (ADR)
-- [ ] 1.1.7 Design modular language support | idea is to use Strategy pattern for different languages 
+- [ ] 1.1.7 Design modular language support | idea is to use Strategy pattern for different languages
 - [/] 1.1.8 Design MVC pattern implementation | loose implementation needs stricter seperation
 - [x] 1.1.9 **[NEW]** Document developer interview findings | Completed Nov 2025
 
@@ -43,16 +43,16 @@ This reorganized backlog clearly separates concerns between:
 *The Python application that generates MATLAB tools*
 
 ### Story 2.1: Wizard Core Architecture
-**As a** developer  
-**I want** a modular wizard application  
-**So that** I can easily maintain and extend it  
+**As a** developer
+**I want** a modular wizard application
+**So that** I can easily maintain and extend it
 **Priority**: 1
 
 #### Tasks:
-- [x] 2.1.1 Design wizard project structure (Python) | posible changes to template_generator and template storing 
+- [x] 2.1.1 Design wizard project structure (Python) | posible changes to template_generator and template storing
 - [x] 2.1.2 Implement wizard folder organization
-- [/] 2.1.3 Create wizard main entry point | has main but wont work when using pyinstaller wil be quik fix 
-- [/] 2.1.4 Implement dependency management | now using absolute imports wont work for distributable version 
+- [/] 2.1.3 Create wizard main entry point | has main but wont work when using pyinstaller wil be quik fix
+- [/] 2.1.4 Implement dependency management | now using absolute imports wont work for distributable version
 - [/] 2.1.5 Set up configuration management system | config file is there needs implementation
 - [ ] 2.1.6 Implement logging framework | maybe unnesesary for MVP
 
@@ -63,17 +63,17 @@ This reorganized backlog clearly separates concerns between:
 - Logging functional (maybe)
 
 ### Story 2.2: User Interface (CLI)
-**As a** super user  
-**I want** an intuitive command-line interface  
-**So that** I can easily create tools without deep programming knowledge  
+**As a** super user
+**I want** an intuitive command-line interface
+**So that** I can easily create tools without deep programming knowledge
 **Priority**: 1
 
 #### Tasks:
 - [ ] 2.2.1 Design CLI workflow (step-by-step wizard) | **important**
 - [ ] 2.2.2 Implement CLI navigation system | maybe not nesesary for MVP
-- [x] 2.2.3 Create input prompts with clear error messaging | 
+- [x] 2.2.3 Create input prompts with clear error messaging |
 - [ ] 2.2.4 Add progress indicators | not MVP
-- [ ] 2.2.5 Make readme + user manual 
+- [ ] 2.2.5 Make readme + user manual
 
 **Acceptance Criteria**:
 - CLI guides user through process
@@ -82,23 +82,23 @@ This reorganized backlog clearly separates concerns between:
 - Works for users with basic MATLAB knowledge
 
 ### Story 2.3: Input Collection & Validation
-**As a** wizard user  
-**I want** to provide minimal required information  
-**So that** tool generation is quick and error-free  
+**As a** wizard user
+**I want** to provide minimal required information
+**So that** tool generation is quick and error-free
 **Priority**: 1
 
 #### Tasks:
 - [x] 2.3.1 Create input collection module | Dataclass used can easily be expanded
-- [ ] 2.3.2 Implement tool name validation (MATLAB naming rules) 
-- [/] 2.3.3 Implement input method selection (file/data/config) | only .mat for now may need redesign for robuster and more widespread support 
+- [ ] 2.3.2 Implement tool name validation (MATLAB naming rules)
+- [/] 2.3.3 Implement input method selection (file/data/config) | only .mat for now may need redesign for robuster and more widespread support
 - [ ] 2.3.3a **[NEW - Interview]** Add .inp config file support | Primary config format per interview
 - [ ] 2.3.3b **[NEW - Interview]** Add .xlsx input support | Always required, especially for design inputs
 - [ ] 2.3.4 Implement output type selection
 - [ ] 2.3.4a **[NEW - Interview]** Support multiple output types (.xlsx, .txt, .mat, .docx, .pdf, objects) | Per interview findings
 - [ ] 2.3.5 Add description field with validation
 - [ ] 2.3.6 Create optional category/type field
-- [/] 2.3.7 Implement input sanitization | basic input handeling needs expanding 
-- [x] 2.3.8 Add validation error messages | needs expanding as more is added 
+- [/] 2.3.7 Implement input sanitization | basic input handeling needs expanding
+- [x] 2.3.8 Add validation error messages | needs expanding as more is added
 
 **Acceptance Criteria**:
 - All required fields collected
@@ -108,9 +108,9 @@ This reorganized backlog clearly separates concerns between:
 - **[NEW]** Supports .inp, .xlsx, and .mat input formats
 
 ### Story 2.4: File Generation Engine
-**As a** wizard  
-**I want** a robust file generation system  
-**So that** I can create complete tool structures  
+**As a** wizard
+**I want** a robust file generation system
+**So that** I can create complete tool structures
 **Priority**: 1
 
 #### Tasks:
@@ -133,13 +133,13 @@ This reorganized backlog clearly separates concerns between:
 *The template engine and boilerplate code templates (needs discussion maybe overkill)*
 
 ### Story 3.1: Template Engine Development
-**As a** wizard  
-**I want** a flexible template system  
-**So that** I can generate different types of code  
+**As a** wizard
+**I want** a flexible template system
+**So that** I can generate different types of code
 **Priority**: 1
 
 #### Tasks:
-- [ ] 3.1.1 Implement basic .replace engine 
+- [ ] 3.1.1 Implement basic .replace engine
 - [ ] 3.1.1 Research template engines (Jinja2 vs string.Template)
 - [ ] 3.1.2 Implement template engine wrapper
 - [ ] 3.1.3 Create template registry system
@@ -154,7 +154,7 @@ This reorganized backlog clearly separates concerns between:
 - Invalid templates detected
 
 ### Story 3.2: MATLAB Code Templates
-needs alot of research still as i have no knowledge of this research apparant current implementations that are there 
+needs alot of research still as i have no knowledge of this research apparant current implementations that are there
 
 **Reference implementations identified in developer interview:**
 - Gold standard: `matlab\of\struct\USAIN`
@@ -164,9 +164,9 @@ needs alot of research still as i have no knowledge of this research apparant cu
 - Logger: `libs\matlab\logging\+logging\Logger.m`
 - .inp parsing: `gen_utilities\InputFile\InputFile.m`
 
-**As a** developer  
-**I want** comprehensive MATLAB templates  
-**So that** generated tools follow best practices  
+**As a** developer
+**I want** comprehensive MATLAB templates
+**So that** generated tools follow best practices
 **Priority**: 1
 
 #### Tasks:
@@ -199,9 +199,9 @@ needs alot of research still as i have no knowledge of this research apparant cu
 ### Story 4.1: Folder Structure Generation
 for now static implementation could maybe be a data class
 
-**As a** generated tool  
-**I want** a standardized folder structure  
-**So that** I follow organizational standards  
+**As a** generated tool
+**I want** a standardized folder structure
+**So that** I follow organizational standards
 **Priority**: 1
 
 #### Tasks:
@@ -225,9 +225,9 @@ for now static implementation could maybe be a data class
 - **[NEW]** Test folders include _data and _generated subfolders
 
 ### Story 4.2: Core MATLAB Files
-**As a** generated tool  
-**I want** complete boilerplate code  
-**So that** I can run immediately after generation  
+**As a** generated tool
+**I want** complete boilerplate code
+**So that** I can run immediately after generation
 **Priority**: 1
 
 #### Tasks:
@@ -252,9 +252,9 @@ for now static implementation could maybe be a data class
 - **[NEW]** PostLoad/PostParse files generated with placeholder implementations
 
 ### Story 4.3: Test Generation
-**As a** generated tool  
-**I want** automated tests  
-**So that** I can validate functionality  
+**As a** generated tool
+**I want** automated tests
+**So that** I can validate functionality
 **Priority**: 1
 
 **Reference:** `matlab\of\struct\USAIN\+UsainTest\USAIN_Test.m`
@@ -278,9 +278,9 @@ for now static implementation could maybe be a data class
 - **[NEW]** Test folders properly structured with _data and _generated
 
 ### Story 4.4: Documentation Generation
-**As a** generated tool  
-**I want** comprehensive documentation  
-**So that** users understand how to use me  
+**As a** generated tool
+**I want** comprehensive documentation
+**So that** users understand how to use me
 **Priority**: 1
 
 #### Tasks:
@@ -304,9 +304,9 @@ for now static implementation could maybe be a data class
 *Ensuring generated tools meet standards*
 
 ### Story 5.1: Pre-commit Compliance
-**As a** generated tool  
-**I want** to pass all pre-commit checks  
-**So that** I can be merged without issues  
+**As a** generated tool
+**I want** to pass all pre-commit checks
+**So that** I can be merged without issues
 **Priority**: 1
 
 #### Tasks:
@@ -323,9 +323,9 @@ for now static implementation could maybe be a data class
 - No manual fixes needed
 
 ### Story 5.2: Integration Testing
-**As a** wizard  
-**I want** end-to-end testing  
-**So that** I know the complete flow works  
+**As a** wizard
+**I want** end-to-end testing
+**So that** I know the complete flow works
 **Priority**: 1
 
 #### Tasks:
@@ -348,9 +348,9 @@ for now static implementation could maybe be a data class
 *Making the wizard available and usable*
 
 ### Story 6.1: Deployment Strategy
-**As a** development team  
-**I want** a clear deployment process  
-**So that** users can install and use the wizard  
+**As a** development team
+**I want** a clear deployment process
+**So that** users can install and use the wizard
 **Priority**: 2
 
 #### Tasks:
@@ -366,9 +366,9 @@ for now static implementation could maybe be a data class
 - Troubleshooting available
 
 ### Story 6.2: User Documentation
-**As a** user  
-**I want** comprehensive documentation  
-**So that** I can use the wizard effectively  
+**As a** user
+**I want** comprehensive documentation
+**So that** I can use the wizard effectively
 **Priority**: 2
 
 #### Tasks:
@@ -390,9 +390,9 @@ for now static implementation could maybe be a data class
 *Post-MVP features for future releases*
 
 ### Story 7.1: Additional Language Support
-**As a** developer  
-**I want** Python tool generation  
-**So that** I can create Python tools too  
+**As a** developer
+**I want** Python tool generation
+**So that** I can create Python tools too
 **Priority**: 3 (Future)
 
 #### Tasks:
@@ -402,9 +402,9 @@ for now static implementation could maybe be a data class
 - [ ] 7.1.4 Add Python-specific validation
 
 ### Story 7.2: GUI Generation
-**As a** user  
-**I want** optional GUI generation  
-**So that** non-programmers can use my tools  
+**As a** user
+**I want** optional GUI generation
+**So that** non-programmers can use my tools
 **Priority**: 3 (Future)
 
 #### Tasks:
@@ -413,9 +413,9 @@ for now static implementation could maybe be a data class
 - [ ] 7.2.3 Implement GUI option in wizard
 
 ### Story 7.3: Advanced Features
-**As a** power user  
-**I want** advanced customization options  
-**So that** I can create specialized tools  
+**As a** power user
+**I want** advanced customization options
+**So that** I can create specialized tools
 **Priority**: 3 (Future)
 
 #### Tasks:
@@ -493,9 +493,8 @@ for now static implementation could maybe be a data class
 
 ### Pending Clarifications
 - [ ] mkdocs.yml configuration specifics
-- [ ] CHANGELOG format requirements  
+- [ ] CHANGELOG format requirements
 - [ ] Function header documentation style
 - [ ] Dependency documentation standardization
 
 ---
-

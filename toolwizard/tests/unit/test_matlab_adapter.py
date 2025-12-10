@@ -1,7 +1,7 @@
+# -*- coding: utf-8 -*-
 """Unit tests for MATLAB adapter."""
 
 import pytest
-
 from tool_wizard.adapters.matlab_adapter import MATLABAdapter
 
 
@@ -11,7 +11,7 @@ class TestMATLABAdapter:
     def test_get_file_extension(self) -> None:
         """Test getting MATLAB file extension."""
         adapter = MATLABAdapter()
-        assert adapter.get_file_extension() == ".m"
+        assert adapter.get_file_extension() == '.m'
 
     def test_get_folder_structure_not_implemented(self) -> None:
         """Test that get_folder_structure raises NotImplementedError."""
@@ -29,4 +29,4 @@ class TestMATLABAdapter:
         """Test that validate_naming raises NotImplementedError."""
         adapter = MATLABAdapter()
         with pytest.raises(NotImplementedError):
-            adapter.validate_naming("test_name")
+            adapter.validate_naming('test_name')
