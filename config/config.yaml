@@ -1,0 +1,38 @@
+# Tool Wizard Configuration
+
+# Application settings
+app:
+  name: "Tool Wizard"
+  version: "1.1.0"
+
+# Paths
+paths:
+  templates_dir: "Templates"
+  output_dir: "output"
+  config_dir: "config"
+
+# Logging
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "tool_wizard.log"
+
+# Validation
+validation:
+  min_description_length: 10
+  max_name_length: 50
+  allowed_languages:
+    - "matlab"
+    - "python"
+
+# Templates
+templates:
+  matlab:
+    main_class: "matlab_class_template.m"
+    function: "matlab_function_template.m"
+    test: "matlab_test_template.m"
+    contents: "contents_template.m"
+  python:
+    module: "python_module_template.py"
+    class: "python_class_template.py"
+    test: "python_test_template.py"

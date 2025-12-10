@@ -1,0 +1,93 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+        -   id: double-quote-string-fixer
+            name: 'Fix double quoted strings'
+        -   id: check-added-large-files
+            name: 'Check if large files are being committed'
+            # TODO: Add your own exclusions if needed
+            # exclude: ^(path/to/exclude/.*)$
+        -   id: check-ast
+            name: 'Verify validity of Python files'
+        -   id: check-json
+            name: 'Verify syntax of JSON files'
+        -   id: check-yaml
+            name: 'Verify syntax of safe YAML files'
+            # TODO: Add your own exclusions if needed
+            # exclude: ^(.*/test_files/.*|specific_file\.yml)$
+        # Uncomment if you have YAML with unsafe constructors (like !ENV)
+        # -   id: check-yaml
+        #     name: 'Verify syntax of unsafe YAML files'
+        #     args: [--unsafe]
+        #     files: 'YOUR_PATTERN\.yml'
+        -   id: end-of-file-fixer
+            name: 'Ensure files end in a newline'
+            # TODO: Add your own exclusions if needed
+            # exclude: '(\.ipynb$)|(\.svg$)|(\.ext$)'
+        -   id: no-commit-to-branch
+            name: 'Prevent commits to protected branches'
+        -   id: fix-encoding-pragma
+            name: 'Add UTF-8 statement for Python'
+        -   id: trailing-whitespace
+            name: 'Trim trailing whitespace'
+            # TODO: Add your own exclusions if needed
+            # exclude: '\.ext
+-   repo: https://github.com/pre-commit/mirrors-autopep8
+    rev: v2.0.4
+    hooks:
+        -   id: autopep8
+            name: 'Enforce PEP8 style for Python'
+-   repo: https://github.com/myint/autoflake
+    rev: v2.2.1
+    hooks:
+        -   id: autoflake
+            name: 'Removes unused imports and variables for Python'
+            args:
+                - --in-place
+                - --remove-all-unused-imports
+-   repo: https://github.com/pycqa/isort
+    rev: 5.12.0
+    hooks:
+        -   id: isort
+            name: 'Sorts and organizes imports for Python'
+-   repo: local
+    hooks:
+        -   id: mypy
+            name: 'Type checking Python with mypy'
+            entry: bash scripts/run-mypy.sh
+            args: []
+            files: '\.py$'
+            language: 'system'
+            description: "Type checking the repo using mypy"
+            require_serial: true
+        -   id: mh_style
+            name: 'Check MATLAB style'
+            entry: mh_style
+            args: [--fix]
+            files: '\.m$'
+            exclude: '([\\\/]Contents\.m$|templates/.*\.m$|generated_tools/.*\.m$)'
+            language: python
+            additional_dependencies: [miss_hit_core==0.9.41]
+        -   id: validate-conda-environment
+            name: 'Validate conda environments'
+            entry: python scripts/validate_conda_environment.py
+            files: 'environment\.ya?ml$'
+            language: python
+            verbose: true
+            additional_dependencies: [pyyaml, requirements-parser, setuptools==68.2.2]
+        -   id: validate-requirements
+            name: 'Validate requirements match in files'
+            entry: python scripts/validate_requirements.py
+            files: '^(environment\.ya?ml)$'
+            language: python
+            require_serial: true
+        -   id: check-environment-sync
+            name: 'Check and update environment.yaml if out of sync'
+            entry: python scripts/check_environment_sync.py
+            language: python
+            pass_filenames: false
+            always_run: true
+            additional_dependencies: [pyyaml]

@@ -1,0 +1,177 @@
+
+---
+title: Tool Wizard Class Diagram
+---
+classDiagram
+direction TB
+
+    %% =============================================
+    %% CHANGELOG
+    %% =============================================
+    %% [1.1.0] - 2025-12-08
+    %% Changed:
+    %%   - Renamed ToolInfo to Tool
+    %%   - ILanguageAdapter.get_folder_structure() returns list[Path] instead of FolderStructure
+    %%   - ILanguageAdapter.validate_naming() returns bool instead of ValidationResult
+    %%   - MATLABAdapter body cleared - placeholder for MATLAB-specific functions
+    %%   - CLIView body cleared - placeholder for CLI-specific functions
+    %% Added:
+    %%   - WizardController.process_input(tool: Tool) method
+    %%   - Notes for context on key classes
+    %%   - Title to diagram
+    %% Removed:
+    %%   - FolderStructure dataclass - simplified to list[Path]
+    %%   - Invalid UML relationships (creates, returns)
+    %%
+    %% [1.0.0] - 2025-12-01
+    %% Added:
+    %%   - Initial class diagram with MVC + Strategy pattern architecture
+    %%   - Core classes: ToolInfo, FolderStructure, GenerationResult, ValidationResult
+    %%   - View layer: IView, CLIView, GUIView
+    %%   - Controller: WizardController
+    %%   - Services: ValidationService, FileGenerator, TemplateEngine, TemplateRegistry, ConfigManager
+    %%   - Adapters: ILanguageAdapter, MATLABAdapter, PythonAdapter
+    %% =============================================
+
+    %% =============================================
+    %% DATA CLASSES
+    %% =============================================
+    class Tool {
+        +tool_name: str
+        +description: str
+        +author: str
+        +input_types: list
+        +output_types: list
+        +language: str
+        +category: str
+        +version: str
+    }
+
+    class GenerationResult {
+        +success: bool
+        +output_path: Path
+        +files_created: list
+        +errors: list
+    }
+
+    class ValidationResult {
+        +is_valid: bool
+        +errors: list
+        +warnings: list
+    }
+
+    %% =============================================
+    %% VIEW LAYER
+    %% =============================================
+    class IView {
+        +collect_tool_info() Tool
+        +display_progress(message)
+        +display_result(result)
+        +display_error(message)
+    }
+
+    class CLIView {
+        CLI-specific functions
+    }
+
+    class GUIView {
+    }
+
+    %% =============================================
+    %% CONTROLLER
+    %% =============================================
+    class WizardController {
+        -view: IView
+        -adapter: ILanguageAdapter
+        -validator: ValidationService
+        -generator: FileGenerator
+        -config: ConfigManager
+        +run() GenerationResult
+        +process_input(tool: Tool) GenerationResult
+        -_validate_all(tool) ValidationResult
+    }
+
+    %% =============================================
+    %% SERVICES
+    %% =============================================
+    class ValidationService {
+        +validate(tool: Tool) ValidationResult
+        -_check_required_fields(tool)
+        -_check_description(tool)
+    }
+
+    class FileGenerator {
+        -template_engine: TemplateEngine
+        -config: ConfigManager
+        +generate(tool, paths) GenerationResult
+        +create_directories(paths) bool
+        +write_files(files) bool
+        +rollback(paths) void
+    }
+
+    class TemplateEngine {
+        -registry: TemplateRegistry
+        -config: ConfigManager
+        +render(template_name, context) str
+        +load_template(name) str
+    }
+
+    class TemplateRegistry {
+        -templates: dict
+        +register(name, path) void
+        +get(name) Path
+        +list_all() list
+    }
+
+    class ConfigManager {
+        -settings: dict
+        +load() dict
+        +get(key) Any
+        +get_templates_dir() Path
+        +get_output_dir() Path
+    }
+
+    %% =============================================
+    %% LANGUAGE ADAPTERS
+    %% =============================================
+    class ILanguageAdapter {
+        +get_folder_structure(tool) list~Path~
+        +get_template_names() list
+        +validate_naming(name: str) bool
+        +get_file_extension() str
+    }
+
+    class MATLABAdapter {
+        MATLAB-specific functions
+    }
+
+    class PythonAdapter {
+    }
+
+    %% =============================================
+    %% STEREOTYPES
+    %% =============================================
+    <<dataclass>> Tool
+    <<dataclass>> GenerationResult
+    <<dataclass>> ValidationResult
+    <<interface>> IView
+    <<future>> GUIView
+    <<interface>> ILanguageAdapter
+    <<future>> PythonAdapter
+
+    %% =============================================
+    %% RELATIONSHIPS
+    %% =============================================
+    IView <|.. CLIView : implements
+    IView <|.. GUIView : implements
+    ILanguageAdapter <|.. MATLABAdapter : implements
+    ILanguageAdapter <|.. PythonAdapter : implements
+    WizardController o-- IView
+    WizardController o-- ILanguageAdapter
+    WizardController o-- ValidationService
+    WizardController o-- FileGenerator
+    WizardController o-- ConfigManager
+    FileGenerator o-- TemplateEngine
+    TemplateEngine o-- TemplateRegistry
+    TemplateEngine ..> ConfigManager : uses
+

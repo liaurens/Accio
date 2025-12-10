@@ -1,0 +1,43 @@
+# Tool Wizard Changelog
+
+# Format:
+# version:
+#   date: YYYY-MM-DD
+#   changes:
+#     added:
+#       - Description of new features
+#     changed:
+#       - Description of changes
+#     deprecated:
+#       - Description of deprecated features
+#     removed:
+#       - Description of removed features
+#     fixed:
+#       - Description of bug fixes
+#     security:
+#       - Description of security improvements
+
+1.1.0:
+  date: 2024-12-10
+  changes:
+    added:
+      - Restructured project to follow standardized folder structure
+      - Added main entry point ToolWizard.py
+      - Added changelog.yml for version tracking
+      - Added mkdocs.yml for documentation configuration
+    changed:
+      - Renamed templates/ to Templates/
+      - Moved package from src/tool_wizard/ to +toolwizard/
+      - Integrated tests into package structure as +tests/
+
+1.0.0:
+  date: 2024-11-10
+  changes:
+    added:
+      - Initial MVC + Strategy pattern architecture
+      - MATLAB and Python language adapters
+      - Template engine and registry
+      - Validation service
+      - CLI view implementation
+      - Core data models (Tool, GenerationResult, ValidationResult)
+      - Unit and integration test structure
