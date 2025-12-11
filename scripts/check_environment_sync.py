@@ -74,21 +74,21 @@ def main() -> int:
         file_name = file_env.get('name')
 
         if current_name != file_name:
-            print(f'WARNING: Current environment is "{
-                  current_name}" but file has "{file_name}"')
-            print(f'Skipping sync. Activate "{
-                  file_name}" environment to sync.')
+            print(
+                f'WARNING: Current environment is "{current_name}" but file has "{file_name}"')
+            print(
+                f'Skipping sync. Activate "{file_name}" environment to sync.')
             return 0
 
         if environments_match(current_env, file_env):
             print(f'Environment "{current_name}" is in sync.')
             return 0
 
-        print(f'Environment "{
-              current_name}" is out of sync. Updating environment.yaml...')
+        print(
+            f'Environment "{current_name}" is out of sync. Updating environment.yaml...')
         update_environment_file(env_file, current_env)
-        print(f'Updated environment.yaml with {
-              len(current_env.get("dependencies", []))} packages.')
+        print(
+            f'Updated environment.yaml with {len(current_env.get("dependencies", []))} packages.')
         print('Please stage the updated environment.yaml file.')
 
         # Return 1 to indicate file was modified

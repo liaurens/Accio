@@ -1,0 +1,756 @@
+# Notes on maintaining this changelog:
+# - Stick to semantic versioning -> https://semver.org/
+# - Only use allowed change types: added, changed, deprecated, removed, fixed, security -> https://keepachangelog.com/
+
+name: USAIN
+description: Optimize or check L- and T-flange connections
+language: matlab
+changelog:
+  - version: 5.5.0
+    date: 2025-11-04
+    changed:
+     - Input `diamOutNeck` is now split into `diameter` and `diameterReference`, the allowed options for
+       `diameterReference` are `'outneck'` and `'outermost'`.
+     - Allow T-flanges to be designed with the outer most diameter as fixed reference point.
+       Note that this will also update the aignments of the cans in StructuralModel (if StructuralModel is provided as input).
+    added:
+      - Static method USAIN.calc_bmin_from_inputs.
+      - Expert input `B_MIN` which can be used as additional criteria to determine the bolt circle diameter.
+    removed:
+      - Static method USAIN.run_from_inputs_calc_bcd
+  - version: 5.4.0
+    date: 2025-10-07
+    added:
+      - Static method USAIN.run_from_inputs_calc_bcd
+    fixed:
+      - Minor fixes to plotting flange neck bending stresses for asymmetrical flanges.
+  - version: 5.3.0
+    date: 2025-09-23
+    removed:
+      - Loading outdated full object .usn files (<v3.3.0 before fileport) as fileport
+    changed:
+      - Update dimensions onshore tension tools (ISR and IHF) to follow D3626455/006-CNS INPUTS FOR STEEL TOWER
+  - version: 5.2.0
+    date: 2025-08-12
+    changed:
+      - Renamed the MILF to MILK
+  - version: 5.1.0
+    date: 2025-07-29
+    added:
+      - Input `site` added to the fileport
+    changed:
+      - In UltimateLimitStateStep post run actions analyze unique bolt type for speed improvements
+      - Update onshore ISR and IHF tension tools in bolts catalog
+  - version: 5.0.0
+    date: 2025-07-15
+    added:
+      - Required input `site`, with options `'onshore'` or `'offshore'`
+      - Onshore HV torque tools in bolts catalog
+    changed:
+      - Input fields `Loads.S1FilePath`, `Loads.S1ScalingFactor`, `Loads.S1ScalingLevel`, `Loads.inclinationUnit` and
+        `Loads.inclinationValueFls` must be present in USAIN 5.x.x input files. If no values are given, default values
+        will be used.
+  - version: 4.17.0
+    date: 2025-07-01
+    changed:
+      - Retain BoltFls block for `sgre2` when switching from L- to T-flange
+    fixed:
+      - No more warning about STEPSIZE_WIDTH not being 1mm for T-flanges
+      - No more error when a designed T flange has an uneven width
+  - version: 4.16.0
+    date: 2025-06-17
+    changed:
+      - Extrapolation method to 'linear' if interpolation used is 'pchip'
+      - Use T-flange defaults for BoltFls and FlangeNeckScf when switching from L to T-flange
+  - version: 4.15.0
+    date: 2025-06-03
+    added:
+      - Expert input `DO_ALLOW_SWITCH_L_TO_T`
+  - version: 4.14.0
+    date: 2025-05-20
+    added:
+      - Reporting equivalent SCF in Excel file with intermediate results for flange neck SCF calculations.
+    changed:
+      - Updated JIS_M72 washers dimensions.
+    removed:
+      - Removing "Schmidt/Neuper applicability" section from Excel file with intermediate results for SGRE2.0.
+  - version: 4.13.0
+    date: 2025-05-07
+    added:
+      - Equivalent flange neck bending SCFs output by USAIN, when run in TEXACO. This can be used in STIFT for the
+        damage calculation of the flange-can weld.
+      - Expert input `BOLT_DIAMETER_SELECTION` with options `all` and `uls`, which can be used to reduce the design
+        space based on the ULS assessment.
+    changed:
+      - Simplified cost model, see version notes for more information.
+      - Fatigue calculations are refactored to avoid out of memory issues.
+      - The equivalent flange neck bending SCF is now computed with input `SN_CURVE_NECK`.
+    removed:
+      - Inputs `SN_CURVE_NECK_FOR_EQV_SCF`, `OBJECTIVE_WEIGHT_FASTENER_DIAMETER`, `OBJECTIVE_WEIGHT_FLANGE_THICKNESS` and `OBJECTIVE_WEIGHT_FLANGE_WIDTH`.
+  - version: 4.12.0
+    date: 2025-04-22
+    added:
+      - Second boltfls block `PSF_BOLT_MATERIAL_FLS` added to the fileport
+    changed:
+      - Input `ADDITIONAL_SCF_FLS` applies only on bolt fatigue assessment; removed from flange neck bending stress and
+        SLS pretension loss checks.
+  - version: 4.11.0
+    date: 2025-04-08
+    added:
+      - Input `Loads.inclinationValueFls`
+      - Expert inputs `INCLINATION_MOMENT_FLS`, `FlangeNeckScf.WRITE_INTERMEDIATE_RESULTS`.
+    changed:
+      - Product thickness, used to derive flange yield strength, is computed as minimum value of the total flange height
+        and width in final machined condition, instead of total flange height only.
+      - A warning will be logged if the Markov matrix size is not 51x40.
+  - version: 4.10.0
+    date: 2025-03-25
+    added:
+      - Fields in the FilePort output file to be used in TOSTADA
+    fixed:
+      - T-flange mass was calculated incorrectly (significantly overestimated).
+  - version: 4.9.0
+    date: 2025-03-11
+    added:
+      - Inputs `Loads.S1FilePath`, `Loads.S1ScalingFactor` and `Loads.S1ScalingLevel`.
+      - Expert input `S1_BENDING_MOMENT`.
+      - Reporting S1 loads in log file.
+      - Assessing preload loss from flange plasticity with S1 loads (if provided).
+      - Assessing preload loss from bolt plasticity with S1 loads (if provided), and reporting utilizations separately
+        for every gap angle of all `sgre2` analyses.
+      - Allowing `M39` as input for `boltOptions`.
+  - version: 4.8.0
+    date: 2025-02-26
+    added:
+      - Expert input `SGRE2.GAP_CLOSE_STIFFNESS_RATIO`.
+    changed:
+      - Allowing for multiple `BoltFls` input blocks where `BOLT_FORCE_MODEL` is set to `sgre2`.
+      - Input `BoltFls.PSF_BOLT_MATERIAL_FLS` can be left empty in inputs. A default of 1.10 (for `sgre2` analyses) or
+        1.25 (for all other analyses) will be used if left empty.
+      - Input `BoltFls.SN_CURVE_BOLT` can be left empty in inputs. `EC3_DC50` (for `sgre2` analyses) or `EC3_DC36*` (for
+        all other analyses) will be used if left empty.
+      - Input `BoltFls.THICKNESS_EXPONENT_BOLT` can be left empty in inputs. A default of 0.25 will be used for
+        non-`sgre2` analyses. For `sgre2` runs, the exponent is computed internally.
+    fixed:
+      - Throw warning when the input file is not up-to-date with the template
+      - Ignore flange neck SCF input checks when all FLS assessments are disabled.
+  - version: 4.7.1
+    date: 2025-01-28
+    fixed:
+      - Parameter "b" and bolt circle diameter were computed incorrectly for T-flanges with different neck thickness on
+        upper and lower flange.
+  - version: 4.7.0
+    date: 2025-01-14
+    added:
+      - For input Loads.uls/flsScalingLevel, reference levels like 'interface' are allowed
+  - version: 4.6.0
+    date: 2024-12-17
+    added:
+      - Inputs `SGRE2.FLANGE_TILT_VALUE` and `SGRE2.FLANGE_TILT_UNIT`.
+      - Extending documentation with description of how load scaling factors and SCFs are applied.
+    changed:
+      - SGRE2.0 bolt force model extended for T-flanges.
+      - SGRE2.0 bolt force model modified to be valid for "low preload" cases.
+      - Enabling check for preload loss due to bolt plasticity for T-flanges (`DO_ASSESS_BOLT_PLASTICITY`).
+      - Default value for `SGRE2.INITIAL_SLOPE_REFERENCE_PRELOAD` changed from 0.2 to 0.5.
+      - Applying `MACRO_GEOMETRIC_SCF` directly on fatigue loads (and dead weight). This means that the dead weight, for
+        FLS design only, includes the SCF. For ULS, the SCF is not applied.
+      - Computing utilization for preload loss from bolt plasticity computed using a bolt resistance of 85% of nominal
+        yield (instead of 80% of minimum yield).
+    removed:
+      - Default value for `SGRE2.BENDING_CONTRIBUTION`; computing value according to IEC 61400-6/AMD1 if not set.
+      - Default value for `BoltFls.THICKNESS_EXPONENT_BOLT`; computing value according to IEC 61400-6/AMD1 if not set.
+  - version: 4.5.1
+    date: 2024-12-17
+    fixed:
+      - Running USAIN without FLS assessments resulted in error
+  - version: 4.5.0
+    date: 2024-11-19
+    added:
+      - Added MACRO_GEOMETRIC_SCF as output to be reported in DOCTOR
+    changed:
+      - Extrapolate the load scaling levels if needed
+  - version: 4.4.0
+    date: 2024-11-05
+    changed:
+      - Updated the expert input from ALIGN_LOADS_AT to Loads.ALIGN_AT
+  - version: 4.3.0
+    date: 2024-10-22
+    added:
+      - Computing and reporting Flange Damage Indicator (FDI). Related new inputs are `FDI_COEFFICIENT_A1` and
+        `FDI_COEFFICIENT_A2`.
+    changed:
+      - Updates to SGRE2.0 result summary Excel file; reporting upper and lower wall thickness, resiliences and
+        non-normalized PM-sum.
+      - Markov data outside of range now selects closest data instead of linear extrapolation
+      - Align loads at towertop or interface (based on value of ALIGN_LOADS_AT)
+    removed:
+      - Logging error if the expert input `INCLINATION_MOMENT` and StructuralModel file both are present
+    fixed:
+      - Errors for tower top flange
+      - DEL reporting for interpolated FLS loads
+      - No default value for input flangeType in order to allow T-flange design
+  - version: 4.2.0
+    date: 2024-10-08
+    changed:
+      - Internal bounds for T-flanges updated by changing increasing minimum width-to-thickness ratio from 1 to 2, and
+        by decreasing maximum width-to-thickness ratio from 6 to 4.
+    added:
+      - Expert input `ALIGN_LOADS_AT`.
+    fixed:
+      - Beta factor for Tobinaga could become a complex number in rare cases, without USAIN picking up on it.
+  - version: 4.1.2
+    date: 2024-09-24
+    fixed:
+      - Bug in batch runner for more than 9 flanges
+      - Bug when running multiple Schmidt-Neuper or Petersen assessments, where the design space is reduced in between
+        the two assessments.
+  - version: 4.1.1
+    date: 2024-09-10
+    fixed:
+      - No more error when providing more than 2 BoltFls overrides
+  - version: 4.1.0
+    date: 2024-07-30
+    added:
+      - Allowing `JIS_M36` as input for `boltOptions`.
+      - In batch runner check for consistency in `BoltFls` block, i.e. missing or repeated inputs between multiple blocks.
+  - version: 4.0.0
+    date: 2024-06-18
+    removed:
+      - Calculation of flange neck yielding (failure mode F), including expert input `DO_ASSESS_FLANGE_NECK_YIELDING`.
+      - Expected value for `STEPSIZE_NBOLTS`.
+      - Expert input `ALW_FLANGE_WIDTH`.
+      - Expert input `BEVEL_TYPE`.
+      - Expert input `PRELOAD_LOSS_FACTOR_FLS`.
+      - Expert inputs `doorSegment.FACTOR_CAN_TO_DOOR_THICKNESS` and `doorSegment.MIN_CAN_TO_DOOR_DELTA_THICKNESS`.
+      - Expert inputs `GLOBAL_MAX_FLANGE_WIDTH` and `GLOBAL_MIN_FLANGE_THICKNESS`.
+      - Expert inputs `PRICE_BASE`, `PRICE_DRILLING`, `PRICE_MACHINING` and `PRICE_RAW_MATR.
+      - Input `Loads.inclinationAngle`.
+      - Inputs `doorSegment.doInclude` and `doorSegment.thickness`.
+      - Option `sgre` for input `BoltFls.BOLT_FORCE_MODEL`.
+    added:
+      - Allowing `ISO_M36` as input for `boltOptions`.
+      - Check if bolt extenders are disabled with HV bolts.
+      - Expert inputs `BEVEL_ANGLE` and `BEVEL_ROOT_FACE`.
+      - Expert inputs `DOOR_SEGMENT.DO_INCLUDE`, `DOOR_SEGMENT.THICKNESS`, `DOOR_SEGMENT.MIN_CAN_TO_DOOR_DELTA_THICKNESS`, `DOOR_SEGMENT.FACTOR_CAN_TO_DOOR_THICKNESS`.
+      - Expert inputs `OBJECTIVE_WEIGHT_FASTENER_DIAMETER`, `OBJECTIVE_WEIGHT_FLANGE_THICKNESS` and `OBJECTIVE_WEIGHT_FLANGE_WIDTH`.
+      - Expert inputs `TIGHTENING_SIDE_INSTALLATION` and `TIGHTENING_SIDE_TEMP_STAGES`.
+      - Input `BoltFls.PRELOAD_LOSS_FACTOR_FLS` and `FlangeNeckScf.PRELOAD_LOSS_FACTOR_FLS`.
+      - Input `Loads.inclinationUnit` which contains the unit for `Loads.inclinationValue` (default is "deg")
+      - Input `Loads.inclinationValue`.
+      - Log file for FLS intermediate results now additionally show (absolute) PM-sum.
+      - Logging a summary of design loads at end of run.
+      - Logging a thread requirement results at end of run.
+      - Extending the logged "model summary" with diameters and neck thickness.
+      - Option `none` for input `TEMP_STAGES_TOOL_TYPE`.
+    changed:
+      - Renamed input `diamOutFlange` to `diamOutNeck`, to avoid confusion when designing T-flanges.
+      - Expert input `ALW_FLANGE_THICKN` is now split into `ALW_LOWER_FLANGE_THICKNESS` and `ALW_UPPER_FLANGE_THICKNESS`,
+        allowing each side of the connection to be defined individually.
+      - Expert input `TOL_FILLET_RADIUS` is updated to `TOL_FILLET_RADIUS_PLUS`.
+      - Expert input `TOL_FLANGE_THICKN` is now split into `TOL_FLANGE_THICKNESS_PLUS` and `TOL_FLANGE_THICKNESS_MINUS`.
+      - Default tool application side for torqued bolts >= M64 used to be `lower` and is now `upper`.
+      - Simplified cost model to weighted sum objective function, see version notes for more information.
+    fixed:
+      - The minimum flange thickness criteria `L/D >= 4` did not consider washers (if any).
+      - Allow expert inputs `DEAD_WEIGHT`, `INCLINATION_MOMENT` and `ULS_BENDING_MOMENT` to be set as 0.
+  - version: 3.22.3
+    date: 2024-06-18
+    fixed:
+      - Design gap length and height for SGRE2.0 are now derived using outer, instead of mean, flange neck diameter.
+      - Fixed dimension consistency in ULS failure mode calculations for T-flanges.
+  - version: 3.22.2
+    date: 2024-04-10
+    fixed:
+      - Setting input `DO_UPDATE_DESIGN_SPACE` to `false` led to error in USAIN when infeasible designs were evaluated
+        in the first part of a USAIN run.
+  - version: 3.22.1
+    date: 2024-03-26
+    fixed:
+      - T-flange bolt force model `petersen` only worked when input `DO_UPDATE_DESIGN_SPACE` was set to `false`.
+      - Minor diameter of external thread was incorrectly derived from basic profile (ISO 724) and is now derived from
+        design profile (ISO 898-1).
+      - Bending resilience of nut (load carrying length) was incorrectly computed with pitch diameter and is now
+        computed with nominal diameter (VDI 2230-1).
+  - version: 3.22.0
+    date: 2024-03-12
+    added:
+      - Bolt force model `petersen` for T-flanges.
+  - version: 3.21.1
+    date: 2024-01-30
+    fixed:
+      - Bolt plasticity condition (input `DO_ASSESS_BOLT_PLASTICITY`) is only performed for L-flanges.
+      - Flange plasticity condition (input `DO_ASSESS_FLANGE_PLASTICITY`) is only performed for L-flanges.
+  - version: 3.21.0
+    date: 2024-01-16
+    fixed:
+      - Macro-geometric SCF applied on segment force in bolt plasticity and flange plasticity checks.
+      - Reported flange plasticity utilization ratio now considering the factor `MAX_FAILURE_MODE_D_FLS_UTILIZATION`.
+      - HV bolt lengths will be selected and/or checked based on DASt Ri 021 Table 3a.
+  - version: 3.20.0
+    date: 2023-12-05
+    added:
+      - Input `SGRE2.SHELL_STIFFNESS_METHOD` (default is `interpolated`).
+      - Report shell stiffness method and value in SGRE2.0 result summary Excel file.
+    changed:
+      - Lower bound for SGRE2.0 bending moment parameter a* changed.
+      - Bolt S-N curve (input `SN_CURVE_BOLT`) knee point changed from 5e6 to 2e6 (hard-coded).
+      - Fastener bending stress computed with back-calculated "stress diameter" instead of pitch diameter.
+    fixed:
+      - Polynomial coefficients presented in SGRE2.0 result summary Excel file converted to human-friendly units (kN).
+  - version: 3.19.1
+    date: 2023-11-21
+    changed:
+      - Default value for `SGRE2.BENDING_CONTRIBUTION` decreased from 0.70 to 0.50.
+    fixed:
+      - USAIN would crash when combination of `SGRE2.WRITE_INTERMEDIATE_RESULTS` = true and `DO_ASSESS_FLS` = false was input.
+      - Incorrect stud length was chosen in rare cases where computed visible thread length at the lower side was exactly 0mm.
+  - version: 3.19.0
+    date: 2023-11-07
+    added:
+      - Input `TOL_BCD_TOOL_WALL` (default=4mm), specifically used in the collision check between (tension) tool and (tower) wall.
+    changed:
+      - Updated expert input `PSF_FAV_LOADS` to `PSF_FAVORABLE_LOADS`.
+  - version: 3.18.1
+    date: 2023-10-24
+    fixed:
+      - Warning message regarding `minNBolts` and `maxNBolts` used to incorrectly show units `mm`.
+      - Regardless of user input, `SGRE2.WRITE_INTERMEDIATE_RESULTS` was assigned to same values as input
+        `doorSegment.doInclude`.
+  - version: 3.18.0
+    date: 2023-10-10
+    added:
+      - Input `MIN_NUMBER_BOLTS_FRACTION`.
+      - HV_M36 bolts.
+      - Extended length options for HV bolts.
+  - version: 3.17.0
+    date: 2023-08-29
+    added:
+      - Inputs `INCLINATION_MOMENT` and `ULS_BENDING_MOMENT`.
+    changed:
+      - Default value for `SGRE2.WRITE_INTERMEDIATE_RESULTS` changed to `true`.
+      - Default value for `MAX_FAILURE_MODE_D_FLS_UTILIZATION` changed to 5/6 (~0.83).
+    fixed:
+      - Use minimum neck thickness for parameter "b" in SGRE2.0 calculations.
+  - version: 3.16.1
+    date: 2023-08-16
+    fixed:
+      - error when warning user for `sgre2` model when force needed to close gap exceeds design preload
+  - version: 3.16.0
+    date: 2023-08-15
+    added:
+      - Input `SGRE2.FLATNESS_TOLERANCE`.
+      - Report gap height and length in log, when `sgre2` bolt load model is used.
+    changed:
+      - USAIN will not run when the `sgre2` bolt load model is used, while input `REACTION_DISTANCE_METHOD` is not set
+        to `tobinaga`.
+  - version: 3.15.0
+    date: 2023-08-01
+    added:
+      - Inputs `DO_ASSESS_FLANGE_PLASTICITY`, `MAX_FAILURE_MODE_D_FLS_UTILIZATION`, `SGRE2.WRITE_INTERMEDIATE_RESULTS`.
+      - Design condition to prevent plastic strain in the flange by limiting the utilization of failure mode D under
+        max. FLS loading. This condition can be toggled on/off with expert input `DO_ASSESS_FLANGE_PLASTICITY`.
+      - Optional functionality to save Excel sheet with SGRE2.0 intermediate results, at the end of a run.
+    removed:
+      - Input `MIN_FAILURE_MODE_D_TO_B_RATIO`.
+  - version: 3.14.1
+    date: 2023-07-18
+    fixed:
+      - Updates to the `sgre2` bolt load model after learnings from shadow calculation in IEC 61400-6/AMD1 committee.
+      - Design condition for plastic strain in the bolt now uses bolt force instead of segment force.
+  - version: 3.14.0
+    date: 2023-07-04
+    added:
+      - Design condition to prevent plastic strain in the bolt by limiting the tensile stress under max. FLS loading to
+        80% of characteristic yield. This condition can be toggled on/off with expert input `DO_ASSESS_BOLT_PLASTICITY`.
+    changed:
+      - Enabling flange design optimization with SGRE2.0 bolt load model (previously, this model was only used for
+        checking the final design).
+    deprecated:
+      - Input `DOOR_STIFFNESS_FACTOR` replaced by `MACRO_GEOMETRIC_SCF`. This input relates to stress increases due to
+        macro-geometric effects in general, not just to the stiffening effect of door opening.
+    fixed:
+      - Factor `MACRO_GEOMETRIC_SCF` (formerly `DOOR_STIFFNESS_FACTOR`) applied to segment force instead of applied
+        bending moment.
+      - Mistake in calculation for minimum bolt moment ($M_{S,min}$) for SGRE2.0 model; slope in quadratic term must be
+        negative.
+  - version: 3.13.0
+    date: 2023-05-23
+    changed:
+      - Fileport updated to version 1.3.0
+    added:
+      - First implementation of SGRE2.0 bolt load model. Undocumented and for testing/study purposes only.
+      - Expert inputs `DEAD_WEIGHT`, `SGRE2.BENDING_CONTRIBUTION`, `SGRE2.GAP_ANGLE`, `SGRE2.INITIAL_POINT_OFFSET`,
+        `SGRE2.INITIAL_SLOPE_REFERENCE_PRELOAD`, `MIN_FAILURE_MODE_D_TO_B_RATIO`.
+  - version: 3.12.0
+    date: 2023-05-09
+    changed:
+      - Implementation of sequential step runner (internal framework). End-users may notice slightly different log
+        messages.
+      - Forcibly deactivate the flange gapping, SLS pretension loss and flange neck SCF conditions when designing a
+        T-flange (even if the `DO_ASSES_*` inputs are set to `true`).
+  - version: 3.11.1
+    date: 2023-04-25
+    fixed:
+      - SchmidtNeuper model bolt force markers(max ULS and FLS) are outside of the plot data.
+  - version: 3.11.0
+    date: 2023-04-11
+    changed:
+      - StructuralModel is updated after each job in a batch run, instead of only once at the end of all jobs.
+  - version: 3.10.7
+    date: 2023-04-05
+    fixed:
+      - When using a relative path for input `targetDir`, the log file was not stored in the correct folder.
+      - Rebranded the USAIN InputRunner as USAIN_BatchRunner to avoid confusion for TEXACO with POTATO's batch runner.
+  - version: 3.10.6
+    date: 2023-03-28
+    added:
+      - Gracefully exit the USAIN if the tightening method is tension and custom washers are define
+  - version: 3.10.5
+    date: 2023-03-14
+    changed :
+      - Assembly preload values for tension tightening on IHF RoundNuts increased to have a uniform assembly force
+        regardless of roundnut type.
+  - version: 3.10.4
+    date: 2023-02-20
+    changed:
+      - Renamed Log. to logging. (moved the logging from FO_Utils to libs/matlab)
+  - version: 3.10.3
+    date: 2023-02-03
+    fixed:
+      - Descriptive error message for USAIN run with batch input file
+      - Removed the countryCode DEU option
+  - version: 3.10.2
+    date: 2023-01-19
+    changed:
+      - Updated naming convention for pathlib.Path
+  - version: 3.10.1
+    date: 2023-01-17
+    added:
+      - Preliminary implementation of ISO_M100 studs. Only to be used for conceptual studies, in agreement with flange
+        topic owners. Can only be used in combination with thin-walled sockets (input `TEMP_STAGES_TOOL_TYPE`).
+    fixed:
+      - Writing "..._selectedMdl.inp" file when commented lines for `BoltFls` are present in the original input file.
+      - Throw an error for faulty inputs with larger `boltCircleDiameter` than `diamOutFlange`.
+  - version: 3.10.0
+    date: 2023-01-03
+    added:
+      - Expert input `PRELOAD_LOSS_FACTOR_FLS`.
+      - BCD check for clash between weld cap and temporary torque socket included for the lower flange in interface
+        connections. Previously, it was assumed that this check was not needed.
+      - Inclusion of tolerance on fillet radius, for BCD checks that involve the fillet radius.
+      - Logging intermediate results for bolt fatigue assessment.
+    changed:
+      - Increasing yield strength values for S355 ring rolled flanges according to revision 03 of Design Brief.
+      - Increasing preload values for tension-tightened ISO studs to the values listed in DIBt AbZ from ITH (revision 03
+        of the Design Brief lists slightly higher values, hence this is inherently safe).
+    removed:
+      - Expert input `G_FLANGE`.
+      - Yield strength penalty of 10 MPa for S355 steel.
+    deprecated:
+      - Input `TARGET_PM_SUM` replaced by `BoltFls.TARGET_PM_SUM` and `FlangeNeckScf.TARGET_PM_SUM`, e.g. to allow for
+        defining a damage reserve for a bolt fatigue assessment with Schmidt-Neuper.
+      - Expert inputs `MIN_VISIBLE_THREAD_LENGTH_TORQUE` and `MIN_VISIBLE_THREAD_LENGTH_TENSION` are replaced by single
+        input `MIN_VISIBLE_THREAD_LENGTH` (default = `3P`).
+  - version: 3.9.0
+    date: 2022-12-20
+    added:
+      - Expert inputs MIN_CAN_TO_DOOR_DELTA_THICKNESS and FACTOR_CAN_TO_DOOR_THICKNESS.
+        Only used when a door segment is directly adjacent to the flange and when input `doorSegment.thickness` is not provided.
+        The one leading to the largest thickness will be governing.
+    fixed:
+      - Report nominal masses instead of design value
+  - version: 3.8.5
+    date: 2022-12-06
+    fixed:
+      - Setting input `BoltFls.CUSTOM_PRELOAD` for multiple bolt options resulted in a parsing error.
+  - version: 3.8.4
+    date: 2022-10-11
+    fixed:
+      - Without user-specified bolt length for JIS_M72, no flange thickness could ever be matched.
+      - Axial resilience of the nut, for ISO studs, was overestimated. This fix increases fatigue damage up to ~4%.
+  - version: 3.8.3
+    date: 2022-09-06
+    fixed:
+      - Account for plasticity in flange neck in ULS failure mode calculations.
+  - version: 3.8.2
+    date: 2022-08-25
+    fixed:
+      - Crash in `USAIN.run_batch` when a single `BoltFls` block was defined in the runner's input file, or in a TEXACO
+        input file.
+  - version: 3.8.1
+    date: 2022-08-23
+    fixed:
+      - USAIN crashed during generation of .usn files, when input `DO_ASSESS_FLS` was set to `false`.
+      - ISO_M90 could not be used because of an internal implementation error.
+      - Not all `BoltFls` input blocks were transferred to the generated *_selectedMdl.inp file, when multiple blocks
+        were defined in the input file.
+  - version: 3.8.0
+    date: 2022-08-09
+    added:
+      - Functionality to perform multiple bolt fatigue assessments in a single run.
+    changed:
+      - Bolt extender for ISO_M90 not allowed; as reminder, this was already the case for ISO_M80.
+    removed:
+      - Removed support for deprecated input `PSF_MATERIAL_FLS`.
+  - version: 3.7.0
+    date: 2022-07-28
+    added:
+      - Preliminary implementation of ISO_M90 studs. Only to be used for conceptual studies, in agreement with flange
+        topic owners. Can only be used in combination with thin-walled sockets (input `TEMP_STAGES_TOOL_TYPE`).
+    changed:
+      - Failure mode F evaluated with tensile loads, rather than compressive loads (i.e., the normal force is acting as
+        a favorable load).
+  - version: 3.6.0
+    date: 2022-06-28
+    added:
+      - Support for IHF RoundNuts; select with expert input `NUT_TYPE`.
+    changed:
+      - Value for input `MAX_VISIBLE_THREAD_LENGTH_TENSION` is rounded up to nearest millimeter.
+    fixed:
+      - Nominal height of JIS nuts (was max. value). Only affects reporting.
+  - version: 3.5.0
+    date: 2022-06-14
+    added:
+      - Added thin-walled sockets to internal catalog, used for temporary stages.
+      - Expert input `TEMP_STAGES_TOOL_TYPE` to select the tools used during temporary stages (pre-assembly).
+      - BCD criteria to prevent clash between temporary stages tools and structure wall.
+    changed:
+      - Decrease circumferential dimension of tension tools to actual values from ITH.
+      - Deprecated inputs `toolDimensionCircDir` and `toolDimensionRadialDir`. Renamed to `TOOL_DIMENSION_CIRC_DIR` and
+        `TOOL_DIMENSION_RADIAL_DIR` (expert inputs).
+      - Tolerance on bolt distance calculation is now 2mm for torque tools and 4mm for tension tools.
+      - Minimum visible thread length for torque tightened connections increased to 1.5P.
+  - version: 3.4.0
+    date: 2022-05-17
+    added:
+      - Expert input `DO_TRIM_DESIGN_SPACE` to control handling of input design space bounds (`minFlangeWidth`, etc.).
+      - Expert input `DO_UPDATE_DESIGN_SPACE` to control design space reduction.
+      - Expert input 'GLOBAL_MIN_FLANGE_THICKNESS' to trim the design space.
+      - Expert input 'GLOBAL_MAX_FLANGE_WIDTH' to trim the design space.
+      - Expert input 'GLOBAL_MIN_BOLT_DISTANCE' to limit the maximum number of bolts.
+      - Expert input 'GLOBAL_MAX_BOLT_DISTANCE' to limit the minimum number of bolts.
+      - Design space summary logged at the end of a run.
+    changed:
+      - Handling of input design space bounds (`minFlangeWidth`, etc.), generally leading to fewer obscure warnings.
+      - Minimum flange thickness internally calculated to be the maximum of 100mm and 2 times the bolt diameter.
+      - Maximum flange width internally calculated to be the minimum of 600mm and 3 times the flange thickness.
+      - Minimum flange width internally calculated to be such that the a/b ratio is greater than or equal to 1.25.
+      - Internally calculated flange width value that lead to a/b ratios below 1.2 or above 3 are discarded.
+      - Minimum number of bolts internally calculated to be 90% of the calculated maximum.
+      - Bolt extender not considered in BCD calculations when input `lengthBoltExtender` is explicitly set to 0.
+      - Bolt extender for ISO_M80 not allowed.
+      - ISO_M80 tool dimension in circumferential direction increased from 79.5mm to 81.5mm, for extra safety on bolt
+        distance when tension tool is governing this.
+      - Default value for input `lengthBoltExtender` set to 0mm.
+      - Thread length of JIS_M72 bolt increased from 184mm to 252mm.
+      - Bolt length for JIS_M72 set to range [400mm, 700mm], in steps of 10mm.
+      - JIS_M72 nut minimum height decreased from 71.8mm to 71.2mm.
+      - JIS_M72 nut diameter (width-across-corners) increased from 127.0mm to 133.1mm.
+      - Input `tighteningMethod` is now required to be set. This makes it more transparent what USAIN is doing.
+      - Max. product thickness for SF520 yield strength increased from 275mm to 400mm (to allow for large flanges)
+    removed:
+      - Warning if input DEL_WOHLER_SLOPE is set to 3.5.
+      - Sanity checks on values for inputs `SN_CURVE_NECK` and `SN_CURVE_NECK_FOR_EQV_SCF` (i.e. no more warning if
+        these are set to SGRE_110).
+  - version: 3.3.1
+    date: 2022-05-03
+    fixed:
+      - Custom washers, if defined in inputs, were not considered when determining the flange thickness. This led to
+        infeasible thread requirements.
+      - Incorrect washer resilience computed for tension tightened studs (where no washer is present)
+  - version: 3.3.0
+    date: 2022-03-03
+    changed:
+      - Reduced USAIN filesize by 99.9%. Only necessary data for DOCTOR and SPARROW is stored.
+    added:
+      - Expert input DO_SAVE_FULL_FILE. Toggle to save a full USAIN object to a file.
+  - version: 3.2.1
+    date: 2022-02-23
+    changed:
+      - Nut-to-nut clash check for bolt distance assumes 'real' bolt hole clearance and no tolerances (no eccentric
+        studs).
+      - M80 tool dimension in circular direction increased from 76.0mm to 79.5mm.
+    fixed:
+      - Preload for ISO_M42 tension increased from 61.3kN to 613kN (factor 10 mistake).
+      - ISO_M64 and ISO_M72 tensioners were applied on the lower flange. This is fixed; it should be the upper flange.
+    removed:
+      - Inputs `TOL_BOLT_HOLE_CENTER` and `TOL_TOOL_BOLT`. These were only used for the nut-to-nut clash check (minimum
+        bolt distance).
+  - version: 3.2.0
+    date: 2022-02-15
+    added:
+      - Support for relative paths and paths containing environment variables for inputs `structureInpFilePath`,
+        `targetDir`, `Loads.flsFilePath` and `Loads.ulsFilePath`
+    fixed:
+      - Length tolerance for HV bolts changed to js17 (ISO 286-1). Previously, js14 from ISO 4759-1 was used.
+  - version: 3.1.1
+    date: 2022-02-08
+    fixed:
+      - Logic when USAIN should consider the door segment for bcd calculations.
+  - version: 3.1.0
+    date: 2022-01-25
+    added:
+      - Expert input `DOOR_STIFFNESS_FACTOR`
+    fixed:
+      - Length tolerance for JIS bolts according to JIS B 1180, grade C. Previously, js14 from ISO 4759-1 was used.
+  - version: 3.0.0
+    date: 2022-01-10
+    deprecated:
+      - Replaced input 'diamTighteningTool' by 'toolDimensionCircDir' and 'toolDimensionRadialDir' to account
+        for non-circular tightening tools
+      - Replaced input 'internalsBracketBcd' by 'SECONDARY_HOLES_BCD'
+      - Replaced input 'internalsBracketBh' by 'SECONDARY_HOLES_DIAMETER'
+      - Replaced input 'customWasherDiamIn' by 'CUSTOM_WASHER_DIAM_INNER'
+      - Replaced input 'customWasherDiamOut' by 'CUSTOM_WASHER_DIAM_OUTER'
+      - Replaced input 'customWasherThickn' by 'CUSTOM_WASHER_THICKNESS'
+      - Replaced inputs 'MIN_VISIBLE_THREAD', 'MIN_GRIPPED_THREAD' and 'FACTOR_MAX_PROTRUSION' by inputs
+        'MIN_GRIPPED_THREAD_LENGTH', 'MIN_VISIBLE_THREAD_LENGTH_TENSION', 'MIN_VISIBLE_THREAD_LENGTH_TORQUE',
+        'MAX_VISIBLE_THREAD_LENGTH_TENSION', 'MAX_VISIBLE_THREAD_LENGTH_TORQUE'
+    changed:
+      - Bolt length tolerance for ISO and HV products according to ISO 4759-1. For JIS bolts according to ZPS
+      - Improved memory efficiency of fatigue damage calculations
+    added:
+      - Support for direct-tensioning as tightening method (toggled with input 'tighteningMethod')
+      - Preliminary dimensions and preload values for direct-tension tools
+      - Dimensions for ISRs (Industry Standard Roundnuts) M42 up to M80
+      - Final implementation of ISO_M80 studs (removed disclaimer/warning)
+      - Support for range of fastener lengths instead of two standard lengths
+      - Clash check for direct-tension tools with conical walls
+    fixed:
+      - Minor thread diameter, now computed according to ISO 724:1993
+    removed:
+      - Condition for assessing minimum flange sizes w.r.t transport and installation, and correspondingly
+        expert input 'DO_ASSESS_TRANSLIFT'
+  - version: 2.22.0
+    date: 2021-11-09
+    added:
+      - Expert input 'THICKNESS_EXPONENT_BOLT' to control the thickness exponent for the bolt fatigue
+        assessment. Defaults to 0.25, which is in line with Eurocode 3.
+    changed:
+      - Expert input 'PSF_MATERIAL_FLS' split into 'PSF_BOLT_MATERIAL_FLS' (for bolt fatigue assessment) and
+        'PSF_FLANGE_MATERIAL_FLS' (for flange neck SCF assessment)
+    fixed:
+      - Implementation error in calculation of bending stress correction used for the SGRE internal bolt force
+        model
+  - version: 2.21.2
+    date: 2021-10-28
+    fixed:
+      - Calculation of outer width (b) for Japanese design
+  - version: 2.21.1
+    date: 2021-10-13
+    added:
+      - Bending stress correction in SGRE internal bolt force model
+    changed:
+      - Updated torque reference and (min.) pretension values for all JIS bolts
+  - version: 2.21.0
+    date: 2021-08-16
+    added:
+      - Expert input 'BOLT_FORCE_MODEL' to allow for switching between Schmidt-Neuper and SGRE interal bolt
+        force models.
+      - Expert input 'IGNORE_BOLT_EXTENDER' to toggle the inclusion of the bolt extender for fatigue capacity
+      - Expert input 'CUSTOM_PRELOAD' to allow for overriding pretension values (e.g. for tension tightening)
+  - version: 2.20.0
+    date: 2021-07-27
+    added:
+      - Inputs 'doorSegment.doInclude' and 'doorSegment.thickness'
+      - Calculation for bolt circle diameter if door segment is present
+  - version: 2.19.0
+    date: 2021-07-07
+    changed:
+      - Allowing for 20 percent over-utilization on SLS pretension loss check
+      - Tobinaga set to be the default method for determining reaction distance (a') (both ROW and JPN now)
+      - Proposing a minimum nose thickness if failure mode F is governing the flange design
+      - Warning if flange neck SCFs are to be assessed for T-flanges
+  - version: 2.18.0
+    date: 2021-06-15
+    added:
+      - For Japanese designs, include reporting of critical failure mode in log and store info for reporting in DOCTOR.
+  - version: 2.17.0
+    date: 2021-05-17
+    fixed:
+      - For Japanese designs, include reduction of outer width b in calculations for failure modes.
+      - Negative thread lengths now recognized as being infeasible.
+  - version: 2.16.0
+    date: 2021-04-23
+    added:
+      - Implementation of failure mode F (flange neck yielding) for Japanese flange designs.
+  - version: 2.15.0
+    date: 2021-04-14
+    added:
+      - Preliminary implementation of ISO_M80 studs. Only to be used for conceptual studies, in agreement with
+        flange topic owners.
+    changed:
+      - Updating preload and reference torque values for JIS bolts to be in line with Table 13 of ZPS 1042575.
+        For JIS_M72, no reference torque is defined because JIS_M72 fasteners are tension-tightened. Preload
+        value is estimated at 70% of yield (2131kN).
+    fixed:
+      - Failure mode F to consider normal force as unfavorable load.
+      - Removed significant conservatism in FLS calculations for T-flange by fixing a bug that divided the
+        bolt force by 2, rather than the applied segment force. Now aligned with design brief.
+  - version: 2.14.0
+    date: 2021-03-25
+    fixed:
+      - Allowing user defined min/max flange width and thickness to override internally established feasible
+        limits (using expert input FORCE_FEASIBLE_DESIGN_SPACE). Documentation updated to give more clear
+        usage instructions.
+  - version: 2.13.0
+    date: 2021-03-18
+    added:
+      - Implementing separate design condition for flange neck yield limit assessment (failure mode F), to be
+        toggled with input DO_ASSESS_FLANGE_NECK_YIELDING (enabled by default for ROW designs)
+  - version: 2.12.0
+    date: 2021-03-08
+    changed:
+      - Don't apply yield strength penalty of 10MPa for product thickness over 250mm
+  - version: 2.11.0
+    date: 2021-02-18
+    changed:
+      - Split expert input ADDITIONAL_SCF in two separate parts for FLS and ULS calculations.
+  - version: 2.10.0
+    date: 2021-02-08
+    changed:
+      - Computations for max. bolt circle diameter changed to TE design rules. This is less conservative for
+        normal bolt holes. Results are the same for oversize (+10mm) bolt holes.
+  - version: 2.9.0
+    date: 2021-02-03
+    added:
+      - For Japanese T-flanges include ULS failure mode calculations
+  - version: 2.8.2
+    date: 2021-02-02
+    fixed:
+      - Bugfix in ULS failure mode calculations, where feasible designs sometimes were discarded
+  - version: 2.8.1
+    date: 2021-01-27
+    added:
+      - Throwing additional warning if failure mode B is not governing an L-flange design
+  - version: 2.8.0
+    date: 2021-01-06
+    changed:
+      - Using SF520 as default (and expected) steel type for flanges in Japanese market
+      - Storing material designation (steel type + grade) rather than hard-coding in DOCTOR
+      - Storing bolt specific property classes (HV and ISO = '10.9', JIS = 'F10T')
+    fixed:
+      - No longer subtracting 10MPa from yield strength for Japanese market designs, because yield strengths
+        are ministry approved values
+  - version: 2.7.2
+    date: 2020-11-20
+    fixed:
+      - The DELs computed by USAIN (used for reporting in DOCTOR) are first interpolated and then scaled, for
+        fair comparison to the DELs from STIFT
+  - version: 2.7.1
+    date: 2020-11-16
+    added:
+      - For T-flanges, set default values for DO_ASSESS_GAPPING and DO_ASSESS_SLS_PRETENSION to false
+      - Warning message considering T-flange and defaults DO_ASSESS_GAPPING and DO_ASSESS_SLS_PRETENSION
+  - version: 2.7.0
+    date: 2020-11-16
+    added:
+      - Implementation of failure mode F (yielding in flange neck)
+      - Logging intermediate ULS results at end of run
+    fixed:
+      - Excessive amount of duplicate warnings if flange thickness > 250mm or diameter > 7.5m
+  - version: 2.6.0
+    date: 2020-11-16
+    added:
+      - Initial setup of changelog

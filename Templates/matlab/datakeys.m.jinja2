@@ -1,0 +1,12 @@
+classdef DataKeys
+    % Collection of all DataKey-objects used in {{ tool_name }}.
+    % Put into an empty class with constant properties to facilitate tab-completion.
+    % Do not use `runner.DataKey('MyKey')`! Use `{{ tool_package }}.DataKeys.MyKey` instead.
+
+    properties (Constant)
+        Inputs = runner.DataKey('Inputs')
+        % Add more keys here
+        % Results = runner.DataKey('Results')
+    end
+
+end

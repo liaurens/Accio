@@ -1,0 +1,51 @@
+classdef LoadExternalFilesStep < runner.BaseStep & logging.Loggable
+    % Step class for loading external files
+    
+    methods
+
+        function Obj = LoadExternalFilesStep(varargin)
+
+            Obj = assign_varargin_2_classprop(Obj, varargin{:});
+
+            Obj.InputKeys.Inputs = {{ tool_package }}.DataKeys.Inputs;
+            Obj.OutputKeys.StructuralModel = {{ tool_package }}.DataKeys.StructuralModel;
+            % Add other output keys here
+        end
+
+        function str = print_label(~)
+            str = 'Load external files';
+        end
+
+        function run(Obj)
+            Inputs = Obj.get({{ tool_package }}.DataKeys.Inputs);
+
+            % Example: Load StructuralModel
+            % StructuralModelPath = pathlib.Path(Inputs.structureInpFilePath);
+            % StructuralModelObj = Obj.load_structural_model(StructuralModelPath);
+            % Obj.set({{ tool_package }}.DataKeys.StructuralModel, StructuralModelObj);
+            
+            % Add your custom file loading logic here
+        end
+
+        function StructuralModelObj = load_structural_model(Obj, StructuralModelPath)
+            if StructuralModelPath.is_file()
+                Obj.Logger.info('Loading input StructuralModel file: %s', StructuralModelPath);
+                try
+                    % StructuralModelObj = StructuralModel(char(StructuralModelPath));
+                    StructuralModelObj = []; % Placeholder
+                catch ME
+                    Obj.Logger.error(['Error caught while loading StructuralModel ', ...
+                        'from input "structureInpFilePath":\n%s\n\nOriginal error message:\n%s'], ...
+                        StructuralModelPath, ME.message);
+                end
+            else
+                StructuralModelObj = [];
+            end
+        end
+
+        function log_success(Obj, fileDescription, filePath)
+            Obj.Logger.info('Successfully loaded %s from file: %s', fileDescription, filePath);
+        end
+
+    end
+end

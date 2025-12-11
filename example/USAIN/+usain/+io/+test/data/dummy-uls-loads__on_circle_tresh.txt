@@ -1,0 +1,17 @@
+DLC                       Mt_z      [kN]     Mtt_x     [kNm]     Mtt_y     [kNm]     Mtb_x     [kNm]     Mtb_y     [kNm]     Ftb_y      [kN]     Ftt_y      [kN]    Safety
+98.34 m                    Min       Max       Min       Max       Min       Max       Min       Max       Min       Max       Min       Max       Min       Max       IEC
+DLC12_NTM_NSS_m0500_240_01         1         0         1         1         1     26543         1         1         1    113936         0      1453         0      1376      1.35
+DLC12_NTM_NSS_m0500_270_01         1         0         1         1         1     26494         1         1         1    115119         0      1455         0      1371      1.35
+DLC12_NTM_NSS_m0500_300_01         1         0         1         1         1     26593         1         1         1    114560         0      1483         0      1383      1.35
+DLC12_NTM_NSS_m0500_330_11         1     15630         1         1         1         0         1         1         1    114369         0      1445         0      1383      1.35
+DLC13_ETM_NSS_11             1     18215         1         1         1         0         1         1         1    103361         1      1402         0      1271      1.35
+DLC14_ECD_NSS_10             1     15224         1         1         1      5077         1         1         1    152064       116      1874        43      1706      1.35
+DLC14_ECD_NSS_BLL235_11         1     15241         1         1         1         0         1         1         1    146899       114      1818        39      1661      1.35
+DLC15_EWS_NSS_01             1         0         1         1         1     23077         1         1         1    109774         0      1410         0      1320      1.35
+DLC16_NTM_SSS-SWH_50y_01         1         0         1         1         1     27996         1         1         1    114683         1      1498         1      1383      1.35
+DLC21_NTM_RpmSensorErrorShutdown_01         1         0         1         1         1     24505         1         1         1    105920         0      1325         0      1266      1.35
+DLC21c_NTM_ControllerOverspeed_01         1         0         1         1         1     26753         1         1         1    125955         0      1578         0      1487      1.35
+DLC21c_NTM_ControllerOverspeed_BLL235_01         1         0         1         1         1     26753         1         1         1    126875         0      1538         0      1447      1.35
+DLC21g_NTM_GridDrop_m0500_01         1         0         1         1         1     25924         1         1         1    114658         0      1407         0      1323      1.35
+DLC21i_NTM_SingleBladeSensorFailure_01         1         0         1         1         1     29040         1         1         1    109463         4      1421         2      1333      1.35
+DLC94_ECG_FrontalPassage_11         1      8139         1         1         1         0         1         1         1    171784        10      2160         5      1907      1.10

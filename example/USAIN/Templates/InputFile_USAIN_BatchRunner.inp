@@ -1,0 +1,24 @@
+inputFile    : USAIN
+toolVersion  :
+
+<START>
+
+usainBaseInpFilePath :
+structureInpFilePath :
+ulsMeatloafFilePath  :
+
+targetDir            :
+runName              :
+JOB_BASE_DIR         :
+
+% Overrides
+
+
+<END>
+
+% For help, see in Matlab:
+% >> help USAIN
+%
+% EXAMPLE: To define overrides of input "zFlange" for flange 2 and 4
+%   zFlange(2) : -12
+%   zFlange(4) : -40.45

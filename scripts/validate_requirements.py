@@ -48,8 +48,8 @@ def main() -> int:
         reqs_parsed = find_requirement_for_file_contents(
             requirement_name, file_contents)
         if not _check_list_element_equal(reqs_parsed):
-            print(f'Requirement specification for {
-                  requirement_name} not equal in files: ')
+            print(
+                f'Requirement specification for {requirement_name} not equal in files: ')
             for req, fp in zip(reqs_parsed, file_paths):
                 print(f'- {req} found in {fp}')
             return 1

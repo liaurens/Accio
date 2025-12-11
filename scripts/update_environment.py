@@ -41,8 +41,8 @@ def update_environment_file(env_file: pathlib.Path) -> None:
 
     print('Successfully updated', env_file)
     print(f'  Environment: {current_env["name"]}')
-    print(f'  Dependencies: {
-          len(current_env.get("dependencies", []))} packages')
+    print(
+        f'  Dependencies: {len(current_env.get("dependencies", []))} packages')
 
 
 def main() -> int:

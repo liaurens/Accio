@@ -1,0 +1,48 @@
+classdef WriteFilesStep < runner.BaseStep & logging.Loggable
+    % Step class for writing output files
+    
+    methods
+
+        function Obj = WriteFilesStep(varargin)
+
+            Obj = assign_varargin_2_classprop(Obj, varargin{:});
+
+            Obj.InputKeys.Inputs = {{ tool_package }}.DataKeys.Inputs;
+            % Obj.InputKeys.TimeStamp = {{ tool_package }}.DataKeys.TimeStamp;
+            % Obj.InputKeys.Results = {{ tool_package }}.DataKeys.Results;
+
+            Obj.OutputKeys.OutputFilePath = {{ tool_package }}.DataKeys.OutputFilePath;
+        end
+
+        function str = print_label(~)
+            str = 'Write output files';
+        end
+
+        function run(Obj)
+
+            Inputs = Obj.get(Obj.InputKeys.Inputs);
+            % timeStamp = Obj.get({{ tool_package }}.DataKeys.TimeStamp);
+            % Results = Obj.get({{ tool_package }}.DataKeys.Results);
+
+            % Define output path
+            % OutputFilePath = Obj.get_output_file_path(Inputs, timeStamp);
+            % OutputFilePath.parent.mkdir(true);
+
+            % Data to save
+            % SaveData = struct();
+            % SaveData.Inputs = Inputs;
+            % SaveData.Results = Results;
+
+            % Save file (using FilePort or generic save)
+            % save(char(OutputFilePath), '-struct', 'SaveData');
+            
+            % Obj.Logger.info('Written output file: %s', char(OutputFilePath));
+            % Obj.set(Obj.OutputKeys.OutputFilePath, OutputFilePath);
+        end
+
+        function Path = get_output_file_path(~, Inputs, timeStamp)
+            Path = pathlib.Path(Inputs.targetDir) / [timeStamp, '_{{ tool_name }}_', Inputs.runName, '.{{ output_type | default("mat") }}'];
+        end
+
+    end
+end

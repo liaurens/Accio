@@ -59,8 +59,8 @@ def environment_file_is_valid(path: pathlib.Path) -> bool:
             env_yml_data.get('dependencies', []))
         invalid_specifications = get_invalid_specifications(specifications)
         if invalid_specifications:
-            print(f'missing version or bad syntax in: {
-                  path}\nfix to pkg_name == pkg_version for the following')
+            print(
+                f'missing version or bad syntax in: {path}\nfix to pkg_name == pkg_version for the following')
             print('-',  '\n - '.join(invalid_specifications))
             return False
     return True

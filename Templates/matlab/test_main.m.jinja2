@@ -1,0 +1,56 @@
+classdef {{ tool_name }}_Test < Unittest.TestCase % mh:ignore_style
+    % Test class for {{ tool_name }}
+    
+    methods (TestClassSetup)
+        function setup(Obj)
+            Obj.testDir = fileparts(mfilename('fullpath'));
+        end
+    end
+
+    methods (Test, TestTags = {'unit'})
+        function all_input_fields_in_template_and_schema(Obj)
+            % Verify consistency between schema and template
+            testClass = validate.test.CommonTests();
+            schema = {{ tool_package }}.inputs.get_schema();
+            toolName = '{{ tool_name }}';
+            testClass.all_input_fields_in_template_and_schema(Obj, schema, toolName);
+        end
+    end
+
+    methods (Test, TestTags = {'integration'})
+        function copy_inputfiles__no_error(Obj)
+            % Verify copy_inputfiles functionality
+            targetDir = Obj.get_file_path('_generated');
+            fTest = @() {{ tool_name }}.copy_inputfiles(targetDir);
+            
+            outFilePaths = Obj.verify_error_free(fTest);
+            Obj.verifyNotEmpty(outFilePaths);
+        end
+        
+        function verify_changelog_with_tool_version(Obj)
+            % Verify version consistency
+            ToolVersion = tracking.SemanticVersion({{ tool_name }}.VERSION);
+            changelogFile = ToolBasis.get_changelog_file('{{ tool_name }}', 'changelog.yml');
+            Changelog = tracking.Changelog.from_file(changelogFile);
+            
+            Obj.verifyEqual(ToolVersion.major, Changelog.Latest.major);
+        end
+    end
+
+    methods (Test, TestTags = {'system_integration'})
+        function test_run__all_files(~)
+             % Trigger run for all input files in Templates folder
+             % This ensures that provided examples actually run
+             
+             % Locate templates folder relative to this test file
+             % Structure: <Root>/+{{tool_name}}Test/{{tool_name}}_Test.m -> <Root>/Templates
+             templateDir = pathlib.Path(fileparts(mfilename('fullpath'))).parent.parent / 'Templates';
+             testFiles = string(templateDir.glob('*.inp'))';
+
+             for testFile = testFiles
+                 {{ tool_name }}.run(char(testFile));
+             end
+        end
+    end
+
+end

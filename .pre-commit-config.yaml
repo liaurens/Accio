@@ -16,6 +16,7 @@ repos:
             name: 'Verify syntax of JSON files'
         -   id: check-yaml
             name: 'Verify syntax of safe YAML files'
+            args: [--unsafe]
             # TODO: Add your own exclusions if needed
             # exclude: ^(.*/test_files/.*|specific_file\.yml)$
         # Uncomment if you have YAML with unsafe constructors (like !ENV)
