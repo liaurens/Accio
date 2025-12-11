@@ -9,11 +9,11 @@ class Tool:
     tool_name: str
     description: str
     author: str
-    input_types: list[str]
-    output_types: list[str]
-    language: str
+    output_types: str = 'none'
+    language: str = 'matlab'
     category: str = 'general'
     version: str = '1.0.0'
+    input_types: str = 'none'
 
 
 @dataclasses.dataclass

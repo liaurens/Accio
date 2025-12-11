@@ -7,13 +7,19 @@ from toolwizard.models.data_classes import Tool
 class MATLABAdapter:
 
     def get_folder_structure(self, tool: Tool) -> list[Path]:
-        raise NotImplementedError
+        return [Path(tool.tool_name)]
 
     def get_template_names(self) -> list[str]:
         raise NotImplementedError
 
     def validate_naming(self, name: str) -> bool:
-        raise NotImplementedError
+        if not name:
+            return False
+        if not name[0].isalpha():
+            return False
+        if ' ' in name:
+            return False
+        return True
 
     def get_file_extension(self) -> str:
-        raise NotImplementedError
+        return '.m'

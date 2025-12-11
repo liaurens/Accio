@@ -16,8 +16,8 @@ class TestTool:
             tool_name='test_tool',
             description='A test tool',
             author='Test Author',
-            input_types=['double'],
-            output_types=['figure'],
+            input_types='double',
+            output_types='figure',
             language='matlab',
         )
         assert tool.tool_name == 'test_tool'

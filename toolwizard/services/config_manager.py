@@ -6,7 +6,12 @@ from typing import Any
 class ConfigManager:
 
     def __init__(self) -> None:
-        pass
+        self._config = {
+            'paths': {
+                'templates_dir': 'Templates',
+                'output_dir': 'generated_tools'
+            }
+        }
 
     def load(self) -> dict[str, Any]:
         raise NotImplementedError
@@ -15,7 +20,7 @@ class ConfigManager:
         raise NotImplementedError
 
     def get_templates_dir(self) -> Path:
-        raise NotImplementedError
+        return Path(self._config['paths']['templates_dir'])
 
     def get_output_dir(self) -> Path:
-        raise NotImplementedError
+        return Path(self._config['paths']['output_dir'])
