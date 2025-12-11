@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
-import logging
 from pathlib import Path
-
-logger = logging.getLogger(__name__)
 
 
 class TemplateRegistry:
@@ -14,7 +11,7 @@ class TemplateRegistry:
         pass
 
     def get(self, name: str) -> Path:
-        pass
+        raise NotImplementedError
 
     def list_all(self) -> list[str]:
-        pass
+        raise NotImplementedError

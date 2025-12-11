@@ -3,8 +3,8 @@
 
 from pathlib import Path
 
-from tool_wizard.models.data_classes import (GenerationResult, Tool,
-                                             ValidationResult)
+from toolwizard.models.data_classes import (GenerationResult, Tool,
+                                            ValidationResult)
 
 
 class TestTool:

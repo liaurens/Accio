@@ -1,10 +1,6 @@
 # -*- coding: utf-8 -*-
-import logging
-
-from tool_wizard.services.config_manager import ConfigManager
-from tool_wizard.services.template_registry import TemplateRegistry
-
-logger = logging.getLogger(__name__)
+from toolwizard.services.config_manager import ConfigManager
+from toolwizard.services.template_registry import TemplateRegistry
 
 
 class TemplateEngine:
@@ -17,7 +13,7 @@ class TemplateEngine:
         pass
 
     def render(self, template_name: str, context: dict[str, str]) -> str:
-        pass
+        raise NotImplementedError
 
     def load_template(self, name: str) -> str:
-        pass
+        raise NotImplementedError

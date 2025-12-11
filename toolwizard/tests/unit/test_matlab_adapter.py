@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 """Unit tests for MATLAB adapter."""
 
-import pytest
-from tool_wizard.adapters.matlab_adapter import MATLABAdapter
+import pytest  # type: ignore[import-not-found]
+
+from toolwizard.adapters.matlab_adapter import MATLABAdapter
 
 
 class TestMATLABAdapter:

@@ -1,22 +1,19 @@
 # -*- coding: utf-8 -*-
-import logging
 from pathlib import Path
 
-from tool_wizard.models.data_classes import Tool
-
-logger = logging.getLogger(__name__)
+from toolwizard.models.data_classes import Tool
 
 
 class MATLABAdapter:
 
     def get_folder_structure(self, tool: Tool) -> list[Path]:
-        pass
+        raise NotImplementedError
 
     def get_template_names(self) -> list[str]:
-        pass
+        raise NotImplementedError
 
     def validate_naming(self, name: str) -> bool:
-        pass
+        raise NotImplementedError
 
     def get_file_extension(self) -> str:
-        pass
+        raise NotImplementedError

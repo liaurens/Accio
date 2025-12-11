@@ -1,6 +1,6 @@
 classdef WriteFilesStep < runner.BaseStep & logging.Loggable
     % Step class for writing output files
-    
+
     methods
 
         function Obj = WriteFilesStep(varargin)
@@ -35,7 +35,7 @@ classdef WriteFilesStep < runner.BaseStep & logging.Loggable
 
             % Save file (using FilePort or generic save)
             % save(char(OutputFilePath), '-struct', 'SaveData');
-            
+
             % Obj.Logger.info('Written output file: %s', char(OutputFilePath));
             % Obj.set(Obj.OutputKeys.OutputFilePath, OutputFilePath);
         end

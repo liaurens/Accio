@@ -1,12 +1,9 @@
 # -*- coding: utf-8 -*-
-import logging
 from pathlib import Path
 
-from tool_wizard.models.data_classes import GenerationResult, Tool
-from tool_wizard.services.config_manager import ConfigManager
-from tool_wizard.services.template_engine import TemplateEngine
-
-logger = logging.getLogger(__name__)
+from toolwizard.models.data_classes import GenerationResult, Tool
+from toolwizard.services.config_manager import ConfigManager
+from toolwizard.services.template_engine import TemplateEngine
 
 
 class FileGenerator:
@@ -19,13 +16,13 @@ class FileGenerator:
         pass
 
     def generate(self, tool: Tool, paths: list[Path]) -> GenerationResult:
-        pass
+        raise NotImplementedError
 
     def create_directories(self, paths: list[Path]) -> bool:
-        pass
+        raise NotImplementedError
 
     def write_files(self, files: dict[Path, str]) -> bool:
-        pass
+        raise NotImplementedError
 
     def rollback(self, paths: list[Path]) -> None:
         pass

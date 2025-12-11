@@ -1,18 +1,14 @@
 # -*- coding: utf-8 -*-
-import logging
-
-from tool_wizard.models.data_classes import Tool, ValidationResult
-
-logger = logging.getLogger(__name__)
+from toolwizard.models.data_classes import Tool, ValidationResult
 
 
 class ValidationService:
 
     def validate(self, tool: Tool) -> ValidationResult:
-        pass
+        raise NotImplementedError
 
     def _check_required_fields(self, tool: Tool) -> list[str]:
-        pass
+        raise NotImplementedError
 
     def _check_description(self, tool: Tool) -> list[str]:
-        pass
+        raise NotImplementedError

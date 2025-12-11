@@ -2,15 +2,15 @@ classdef {{ tool_name }} < ToolBasis % mh:ignore_style
     % {{ tool_name }} - {{ description }}
     %
     % See also ToolBasis
-    
+
     properties (Constant)
         VERSION = '{{ version | default("0.1.0") }}'
     end
-    
+
     properties
         Mdl     % Main model object
     end
-    
+
     properties (Constant, Hidden)
         TOOL_NAME = '{{ tool_name }}'
     end
@@ -24,24 +24,24 @@ classdef {{ tool_name }} < ToolBasis % mh:ignore_style
         end
 
         %%%%% == INPUT PROCESSING == %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-        
+
         function read_parse_validate_inputfile(Obj, inputFilePath, doSkipVoid)
             % Reads input file and applies validation functions
             %
             % Inputs:
             %   inputFilePath: (char) Path to the input file (Type: {{ input_type | default("inp") }})
             %   doSkipVoid:    (logical) If true, skips void variables
-            
+
             if nargin == 2
                 doSkipVoid = false;
             end
             Obj.info('Parsing and validating input file %s ... ', inputFilePath);
-            
+
             % Load the input file
             Obj.Inp = InputFile(inputFilePath);
             Obj.Inp.targetFilePath = inputFilePath;
             Obj.Inp.skipVoid = doSkipVoid;
-            
+
             % Expand and resolve paths for standard input fields
             % Add variable names here that represent file paths
             varNames = {
@@ -49,14 +49,14 @@ classdef {{ tool_name }} < ToolBasis % mh:ignore_style
                 "targetDir"
                 };
             inpfilehelper.expand_and_resolve_paths(Obj.Inp, varNames);
-            
+
             % Check for deprecated inputs
             map = Obj.define_deprecated_mapping();
             Obj.Inp = Deprecated.check_for_deprecate_inputs(map, Obj.Inp);
-            
+
             % Get validation schema
             Schema = {{ tool_package }}.inputs.get_schema();
-            
+
             % Check inputs against template
             fieldNamesWithDefault = Schema.get_field_names_with_default();
             Obj.check_inputlist_with_latest_template(fieldNamesWithDefault, []);
@@ -64,27 +64,27 @@ classdef {{ tool_name }} < ToolBasis % mh:ignore_style
             % Apply schema and load defaults
             fAssignAs = @(varName) ['Inps.', varName];
             Obj.Inp = validate.apply_schema_to_inputfile(Schema, Obj.Inp, fAssignAs);
-            
+
             % Parse rest of inputs
             Obj.parse_and_assign_inputs();
-            
+
             % Check for unknown inputs
             Obj.check_for_unknown_inputs();
 
             Obj.info('Finished input validation successfully!\n\n');
         end
-        
+
         function do_post_parse_manipulations(Obj)
             % Perform manipulations after parsing but before execution
-             
+
             % Set default target dir if empty
             if strcmp(Obj.Inputs.targetDir, '')
                 Obj.Inputs.targetDir = char(pathlib.Path(Obj.Inp.sourceFilePath).parent / 'Res');
             end
-            
+
             Obj.create_target_dir();
             Obj.move_log_file();
-             
+
             % Call generated manipulation hooks
             % Manipulator = {{ tool_package }}.inputs.PostParseManipulations(Inputs = Obj.Inputs);
             % Obj.Inputs = Manipulator.run();
@@ -92,18 +92,18 @@ classdef {{ tool_name }} < ToolBasis % mh:ignore_style
 
         function do_post_parse_checks(Obj)
             % Performs checks on parsed inputs
-            
+
             % Initialize container for assertion functions and warnings
-            % assertFuncs = {}; 
+            % assertFuncs = {};
             % warnMsgs = {};
-            
+
             % Call generated check hooks
             % Checker = {{ tool_package }}.inputs.PostParseChecks(Inputs = Obj.Inputs);
             % Checker.run();
-            
+
             % Example: Check specific constraints
             % assertFuncs{end + 1} = @() assert(Obj.Inputs.someVal > 0, 'Value must be positive');
-            
+
             % Present errors all at once if accumulated
             % if ~isempty(warnMsgs); Obj.warning(strjoin(warnMsgs, '\n')); end
             % Obj.evaluate_assertfuncs(assertFuncs);
@@ -113,16 +113,16 @@ classdef {{ tool_name }} < ToolBasis % mh:ignore_style
 
         function varargout = execute_tool(Obj, varargin)
              % Execution of main functionality using the SequentialRunner pattern
-             
+
              % Parse and check inputs
              Obj.process_inputs(varargin{1}, false);
-             
+
              Runner = runner.SequentialRunner();
-             
+
              % Set DataKeys
              Runner.set({{ tool_package }}.DataKeys.Inputs, Obj.Inputs);
-             % Runner.set({{ tool_package }}.DataKeys.Results, struct()); 
-             
+             % Runner.set({{ tool_package }}.DataKeys.Results, struct());
+
              % Add Steps to the Runner
              % Add your custom logic steps in the +model or +io packages
              Runner.add( ...
@@ -131,27 +131,27 @@ classdef {{ tool_name }} < ToolBasis % mh:ignore_style
                 {{ tool_package }}.model.MainModelStep(), ...
                 {{ tool_package }}.io.WriteFilesStep() ...
              );
-             
+
              % Run the sequence
              Runner.run();
-             
+
              % Prepare Output Data
              OutData = struct();
              % OutData.results = Runner.get({{ tool_package }}.DataKeys.Results);
-             
+
              if nargout > 0
                 varargout = {Obj, OutData};
              end
         end
 
     end
-    
+
      methods (Static, Hidden)
         function templFilePaths = get_template_path()
             % Returns the path to the template input file
             templFilePaths = get_template_path@ToolBasis({{ tool_name }}.TOOL_NAME);
         end
-        
+
         function map = define_deprecated_mapping()
              % Define mapping for deprecated inputs: {'OldName', 'NewName'}
              map = containers.Map();
@@ -159,59 +159,59 @@ classdef {{ tool_name }} < ToolBasis % mh:ignore_style
      end
 
     methods (Static)
-        
+
         function varargout = copy_inputfiles(targetDir)
              % Copy empty tool input file to specified directory
              %
              % Syntax:
              %   targetFilePath = {{ tool_name }}.copy_inputfiles(targetDir)
-             
+
              narginchk(0, 1);
              if nargin < 1
                 targetDir = input('Please specify a target directory:\n', 's');
              end
-             
+
              toolName = mfilename('class');
              targetFilePath = copy_inputfiles@ToolBasis(toolName, targetDir);
-             
+
              if nargout
                  varargout{1} = targetFilePath;
              end
         end
-        
+
         function do_input_checks(inputFilePath)
             % Check tool input file without running the full tool
-            
+
             Obj = {{ tool_name }}();
             Obj.config_logger();
-            
+
             % Run validation logic
             Obj.process_inputs(inputFilePath, false);
         end
-        
+
         function varargout = run(inputFilePath)
             % Run the tool from a given input file
             %
             % Syntax:
             %   [Obj, OutData] = {{ tool_name }}.run(inputFilePath)
-            
+
             Obj = {{ tool_name }}();
             Obj.config_logger();
-            
+
             % Execute
             [Obj, OutData] = Obj.execute(inputFilePath);
-            
+
              if nargout > 0
                 varargout = {OutData, Obj};
             end
         end
-        
+
         function changelog()
             % Print the changelog for this tool
             toolName = mfilename('class');
             ToolBasis.pprint_changelog(toolName);
         end
-        
+
     end
 
 end

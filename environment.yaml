@@ -6,7 +6,7 @@ dependencies:
 - annotated-types=0.6.0=py312haa95532_1
 - brotlicffi=1.1.0.0=py312h885b0b7_0
 - bzip2=1.0.8=h2bbff1b_6
-- ca-certificates=2025.11.12=h4c7d964_0
+- ca-certificates=2025.12.2=haa95532_0
 - certifi=2025.11.12=py312haa95532_0
 - cffi=2.0.0=py312he06e257_1
 - cfgv=3.5.0=pyhd8ed1ab_0
@@ -19,6 +19,7 @@ dependencies:
 - greenlet=3.2.4=py312h885b0b7_0
 - identify=2.6.15=pyhd8ed1ab_0
 - idna=3.11=py312haa95532_0
+- iniconfig=2.1.0=py312haa95532_0
 - jinja2=3.1.6=py312haa95532_0
 - joblib=1.5.2=py312haa95532_0
 - libffi=3.4.4=hd77b12b_1
@@ -35,12 +36,15 @@ dependencies:
 - pip=25.3=pyhc872135_0
 - platformdirs=4.5.0=pyhcf101f3_0
 - plotly=6.5.0=py312h4442805_0
+- pluggy=1.5.0=py312haa95532_0
 - pre-commit=4.5.0=pyha770c72_0
 - psutil=7.0.0=py312h02ab6af_1
 - pycparser=2.22=pyh29332c3_1
 - pydantic=2.12.3=py312haa95532_1
 - pydantic-core=2.41.4=py312h114bc41_0
+- pygments=2.19.2=py312haa95532_0
 - pysocks=1.7.1=py312haa95532_1
+- pytest=8.4.2=py312haa95532_0
 - python=3.12.12=h716150d_1
 - python_abi=3.12=2_cp312
 - pyyaml=6.0.3=py312h05f76fc_0

@@ -1,6 +1,6 @@
 classdef MainModelStep < runner.BaseStep & logging.Loggable
     % Step class for core model calculations
-    
+
     methods
 
         function Obj = MainModelStep(varargin)
@@ -16,12 +16,12 @@ classdef MainModelStep < runner.BaseStep & logging.Loggable
 
         function run(Obj)
             Inputs = Obj.get(Obj.InputKeys.Inputs);
-            
+
             Obj.Logger.info('Running logic...');
-            
+
             % Implement your core logic here
             % Results = some_calculation(Inputs);
-            
+
             % Obj.set({{ tool_package }}.DataKeys.Results, Results);
         end
 

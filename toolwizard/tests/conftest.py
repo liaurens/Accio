@@ -3,8 +3,9 @@
 
 from pathlib import Path
 
-import pytest
-from tool_wizard.models.data_classes import Tool
+import pytest  # type: ignore[import-not-found]
+
+from toolwizard.models.data_classes import Tool
 
 
 @pytest.fixture

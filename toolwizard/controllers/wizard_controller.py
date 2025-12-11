@@ -1,15 +1,11 @@
 # -*- coding: utf-8 -*-
-import logging
-
-from tool_wizard.adapters.language_adapter import PLanguageAdapter
-from tool_wizard.models.data_classes import (GenerationResult, Tool,
-                                             ValidationResult)
-from tool_wizard.services.config_manager import ConfigManager
-from tool_wizard.services.file_generator import FileGenerator
-from tool_wizard.services.validation_service import ValidationService
-from tool_wizard.views.view_interface import PView
-
-logger = logging.getLogger(__name__)
+from toolwizard.adapters.language_adapter import PLanguageAdapter
+from toolwizard.models.data_classes import (GenerationResult, Tool,
+                                            ValidationResult)
+from toolwizard.services.config_manager import ConfigManager
+from toolwizard.services.file_generator import FileGenerator
+from toolwizard.services.validation_service import ValidationService
+from toolwizard.views.view_interface import PView
 
 
 class WizardController:
@@ -25,10 +21,10 @@ class WizardController:
         pass
 
     def run(self) -> GenerationResult:
-        pass
+        raise NotImplementedError
 
     def process_input(self, tool: Tool) -> GenerationResult:
-        pass
+        raise NotImplementedError
 
     def _validate_all(self, tool: Tool) -> ValidationResult:
-        pass
+        raise NotImplementedError

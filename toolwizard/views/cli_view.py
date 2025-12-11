@@ -1,15 +1,11 @@
 # -*- coding: utf-8 -*-
-import logging
-
-from tool_wizard.models.data_classes import GenerationResult, Tool
-
-logger = logging.getLogger(__name__)
+from toolwizard.models.data_classes import GenerationResult, Tool
 
 
 class CLIView:
 
     def collect_tool_info(self) -> Tool:
-        pass
+        raise NotImplementedError
 
     def display_progress(self, message: str) -> None:
         pass

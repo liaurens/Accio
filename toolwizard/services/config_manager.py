@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
-import logging
 from pathlib import Path
 from typing import Any
-
-logger = logging.getLogger(__name__)
 
 
 class ConfigManager:
@@ -12,13 +9,13 @@ class ConfigManager:
         pass
 
     def load(self) -> dict[str, Any]:
-        pass
+        raise NotImplementedError
 
     def get(self, key: str) -> Any:
-        pass
+        raise NotImplementedError
 
     def get_templates_dir(self) -> Path:
-        pass
+        raise NotImplementedError
 
     def get_output_dir(self) -> Path:
-        pass
+        raise NotImplementedError

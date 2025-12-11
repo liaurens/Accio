@@ -3,8 +3,8 @@ import argparse
 import pathlib
 from typing import Any, List
 
-import requirements
-import yaml
+import requirements  # type: ignore[import-not-found]
+import yaml  # type: ignore[import-untyped]
 from yaml import YAMLError
 
 

@@ -10,7 +10,7 @@ import subprocess
 import sys
 from typing import Any
 
-import yaml
+import yaml  # type: ignore[import-untyped]
 
 
 def get_current_environment() -> dict[str, Any]:

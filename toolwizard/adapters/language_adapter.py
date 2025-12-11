@@ -2,7 +2,7 @@
 from pathlib import Path
 from typing import Protocol
 
-from tool_wizard.models.data_classes import Tool
+from toolwizard.models.data_classes import Tool
 
 
 class PLanguageAdapter(Protocol):
