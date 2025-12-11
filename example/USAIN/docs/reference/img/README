@@ -1,9 +1,0 @@
-Images in SVG (Scalable Vector Graphics) format are preferred. Inkscape is a powerful SVG editor.
-
-In order to save an SVG with Inkscape:
-
-1. Select the object(s) to export.
-2. "Resize page to drawing or selection" (File → Document Properties) or Ctrl+Shift+R.
-3. "Invert selection" (Edit → Invert selection) or !, and Del all other objects.
-4. "Save As" with Ctrl+Shift+S.
-5. Select Optimized SVG as the format.
