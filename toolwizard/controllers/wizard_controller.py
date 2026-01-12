@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from pathlib import Path
+from typing import TYPE_CHECKING, Protocol
 
 from toolwizard.adapters.matlab_adapter import MATLABAdapter
 from toolwizard.models.data_classes import (GenerationResult, Tool,
@@ -7,7 +8,36 @@ from toolwizard.models.data_classes import (GenerationResult, Tool,
 from toolwizard.services.config_manager import ConfigManager
 from toolwizard.services.file_generator import FileGenerator
 from toolwizard.services.validation_service import ValidationService
-from toolwizard.views.view_interface import PView
+
+if TYPE_CHECKING:
+    from toolwizard.adapters.matlab_adapter import TemplateOption
+
+
+class PView(Protocol):
+    """Protocol defining the view interface."""
+
+    def collect_tool_info(self) -> Tool:
+        """Collect tool metadata from user input."""
+        ...
+
+    def collect_template_options(
+        self,
+        options: 'list[TemplateOption]',
+    ) -> list[str]:
+        """Collect optional template selections from user."""
+        ...
+
+    def display_progress(self, message: str) -> None:
+        """Display a progress message."""
+        ...
+
+    def display_result(self, result: GenerationResult) -> None:
+        """Display the generation result."""
+        ...
+
+    def display_error(self, message: str) -> None:
+        """Display an error message."""
+        ...
 
 
 class WizardController:
@@ -26,6 +56,7 @@ class WizardController:
         self._validator = validator
         self._generator = generator
         self._config = config
+        self._optional_templates: list[str] = []
 
     def run(self) -> GenerationResult:
         """Execute the complete wizard workflow.
@@ -49,28 +80,43 @@ class WizardController:
             )
 
         for warning in validation_result.warnings:
-            self._view.display_progress(f"Warning: {warning}")
+            self._view.display_progress(f'Warning: {warning}')
+
+        # Collect optional template selections
+        template_options = self._adapter.get_template_options()
+        self._optional_templates = self._view.collect_template_options(
+            template_options)
 
         return self.process_input(tool)
 
-    def process_input(self, tool: Tool) -> GenerationResult:
+    def process_input(
+        self,
+        tool: Tool,
+        optional_templates: list[str] | None = None,
+    ) -> GenerationResult:
         """Process validated tool input and generate files.
 
         :param tool: Validated Tool metadata
+        :param optional_templates: Override for optional templates (for API use)
         :returns: GenerationResult with success status and created files
         """
-        self._view.display_progress(f"Generating tool: {tool.tool_name}")
+        self._view.display_progress(f'Generating tool: {tool.tool_name}')
 
         output_dir = self._config.get_output_dir()
         if not output_dir.is_absolute():
             output_dir = Path.cwd() / output_dir
 
-        self._view.display_progress(f"Output directory: {output_dir}")
+        self._view.display_progress(f'Output directory: {output_dir}')
+
+        # Use provided templates or fall back to instance variable
+        templates_to_use = optional_templates if optional_templates is not None \
+            else self._optional_templates
 
         result = self._generator.generate(
             tool=tool,
             adapter=self._adapter,
             output_dir=output_dir,
+            optional_templates=templates_to_use,
         )
 
         self._view.display_result(result)

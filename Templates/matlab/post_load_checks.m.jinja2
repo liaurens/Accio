@@ -1,0 +1,49 @@
+classdef PostLoadChecks < handle
+    % PostLoadChecks - Validation checks after loading input data
+    %
+    % This class performs validation checks on {{ tool_name }} inputs
+    % after they have been loaded but before parsing.
+    %
+    % See also {{ tool_name }}, get_schema
+
+    properties
+        Inputs  % Input data structure
+    end
+
+    methods
+        function Obj = PostLoadChecks(options)
+            % Constructor
+            arguments
+                options.Inputs = struct()
+            end
+            Obj.Inputs = options.Inputs;
+        end
+
+        function run(Obj)
+            % Execute all post-load checks
+            %
+            % Add your validation logic here. This runs after inputs
+            % are loaded but before they are parsed.
+
+            % Example checks:
+            % Obj.check_required_files_exist();
+            % Obj.check_input_ranges();
+        end
+    end
+
+    methods (Access = private)
+        % Add private validation methods here
+
+        % function check_required_files_exist(Obj)
+        %     % Verify that required input files exist
+        %     % assert(isfile(Obj.Inputs.someFilePath), ...
+        %     %     'Required file not found: %s', Obj.Inputs.someFilePath);
+        % end
+
+        % function check_input_ranges(Obj)
+        %     % Verify input values are within expected ranges
+        %     % assert(Obj.Inputs.someValue > 0, 'Value must be positive');
+        % end
+    end
+
+end

@@ -21,6 +21,7 @@ This document describes the testing strategy, structure, and practices for the T
    - pytest
    - jinja2
    - pyyaml
+   - pydantic
 
 ### Running Tests
 
@@ -104,9 +105,10 @@ def temp_output_dir(tmp_path: Path) -> Path:
 | `test_data_classes.py` | Tool, GenerationResult, ValidationResult | 3 | Data model creation |
 | `test_matlab_adapter.py` | MATLABAdapter | 7 | MATLAB-specific logic |
 | `test_template_registry.py` | TemplateRegistry | 6 | Template management |
-| `test_validation_service.py` | ValidationService | 5 | Input validation |
+| `test_validation_service.py` | ValidationService, ToolValidator | 17 | Pydantic validation |
+| `test_inp_parser.py` | InpParser | 17 | .inp file parsing |
 
-**Total: 27 unit tests**
+**Total: 56 unit tests**
 
 ---
 
@@ -170,15 +172,39 @@ Tests for template management:
 
 ### ValidationService Tests (`test_validation_service.py`)
 
-Tests for input validation:
+Tests for Pydantic-based input validation, organized into three test classes:
+
+#### TestValidationService
 
 | Test | Description |
 |------|-------------|
 | `test_validate_valid_tool` | Tests validation passes for complete tool |
 | `test_validate_missing_tool_name` | Tests error for missing tool name |
 | `test_validate_missing_description` | Tests error for missing description |
+| `test_validate_short_description` | Tests error for description < 10 characters |
 | `test_validate_missing_author` | Tests error for missing author |
-| `test_validate_multiple_errors` | Tests collection of multiple errors |
+| `test_validate_multiple_errors` | Tests collection of all validation errors |
+| `test_validate_invalid_tool_name_starts_with_number` | Tests error for tool name starting with number |
+| `test_validate_invalid_tool_name_with_spaces` | Tests error for tool name containing spaces |
+| `test_validate_invalid_version_format` | Tests error for invalid semver format |
+| `test_validate_invalid_language` | Tests error for unsupported language |
+
+#### TestToolValidator (Pydantic Model)
+
+| Test | Description |
+|------|-------------|
+| `test_valid_tool_validator` | Tests Pydantic model with valid data and defaults |
+| `test_tool_name_stripped` | Tests whitespace stripping on tool name |
+| `test_valid_version_formats` | Tests X.Y and X.Y.Z version formats |
+| `test_language_normalized_to_lowercase` | Tests language normalization to lowercase |
+
+#### TestValidatePartial (Real-time Validation)
+
+| Test | Description |
+|------|-------------|
+| `test_validate_partial_valid_tool_name` | Tests partial validation of valid field |
+| `test_validate_partial_invalid_tool_name` | Tests partial validation catches errors |
+| `test_validate_partial_multiple_fields` | Tests validation of multiple fields together |
 
 ---
 
@@ -265,7 +291,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install dependencies
-        run: pip install pytest jinja2 pyyaml
+        run: pip install pytest jinja2 pyyaml pydantic
       - name: Run tests
         run: pytest toolwizard/tests/unit/ -v
 ```

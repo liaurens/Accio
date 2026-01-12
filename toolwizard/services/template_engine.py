@@ -2,7 +2,8 @@
 from pathlib import Path
 from typing import Any
 
-from jinja2 import Environment, FileSystemLoader, Template
+from jinja2 import Environment  # type: ignore[import-not-found]
+from jinja2 import FileSystemLoader, Template
 
 from toolwizard.services.config_manager import ConfigManager
 from toolwizard.services.template_registry import TemplateRegistry
@@ -43,7 +44,6 @@ class TemplateEngine:
         :returns: Rendered template content as string
         :raises KeyError: If template not found in registry
         """
-        template_path = self._registry.get(template_name)
         template_content = self.load_template(template_name)
 
         template = Template(template_content)
@@ -73,6 +73,6 @@ class TemplateEngine:
 
         if not template_path.exists():
             raise FileNotFoundError(
-                f"Template file not found: {template_path}")
+                f'Template file not found: {template_path}')
 
         return template_path.read_text(encoding='utf-8')

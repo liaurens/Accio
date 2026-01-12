@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+"""Core data classes for the Tool Wizard."""
 import dataclasses
 from pathlib import Path
 

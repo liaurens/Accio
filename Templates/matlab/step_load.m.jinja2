@@ -1,15 +1,21 @@
 classdef LoadExternalFilesStep < runner.BaseStep & logging.Loggable
-    % Step class for loading external files
+    % Step for loading external files (data, models, etc.)
+    %
+    % This step runs before the main model step. Use it to:
+    % - Load input data files
+    % - Load structural models
+    % - Load any external dependencies
+    %
+    % See also runner.BaseStep, {{ tool_name }}
 
     methods
 
         function Obj = LoadExternalFilesStep(varargin)
-
             Obj = assign_varargin_2_classprop(Obj, varargin{:});
 
+            % Define what this step needs and produces
             Obj.InputKeys.Inputs = {{ tool_package }}.DataKeys.Inputs;
-            Obj.OutputKeys.StructuralModel = {{ tool_package }}.DataKeys.StructuralModel;
-            % Add other output keys here
+            % Obj.OutputKeys.MyData = {{ tool_package }}.DataKeys.MyData;
         end
 
         function str = print_label(~)
@@ -19,33 +25,14 @@ classdef LoadExternalFilesStep < runner.BaseStep & logging.Loggable
         function run(Obj)
             Inputs = Obj.get({{ tool_package }}.DataKeys.Inputs);
 
-            % Example: Load StructuralModel
-            % StructuralModelPath = pathlib.Path(Inputs.structureInpFilePath);
-            % StructuralModelObj = Obj.load_structural_model(StructuralModelPath);
-            % Obj.set({{ tool_package }}.DataKeys.StructuralModel, StructuralModelObj);
+            % Add your file loading logic here
+            % Example:
+            % data = load(Inputs.dataFilePath);
+            % Obj.set({{ tool_package }}.DataKeys.MyData, data);
 
-            % Add your custom file loading logic here
-        end
-
-        function StructuralModelObj = load_structural_model(Obj, StructuralModelPath)
-            if StructuralModelPath.is_file()
-                Obj.Logger.info('Loading input StructuralModel file: %s', StructuralModelPath);
-                try
-                    % StructuralModelObj = StructuralModel(char(StructuralModelPath));
-                    StructuralModelObj = []; % Placeholder
-                catch ME
-                    Obj.Logger.error(['Error caught while loading StructuralModel ', ...
-                        'from input "structureInpFilePath":\n%s\n\nOriginal error message:\n%s'], ...
-                        StructuralModelPath, ME.message);
-                end
-            else
-                StructuralModelObj = [];
-            end
-        end
-
-        function log_success(Obj, fileDescription, filePath)
-            Obj.Logger.info('Successfully loaded %s from file: %s', fileDescription, filePath);
+            Obj.Logger.info('External files loaded.');
         end
 
     end
+
 end

@@ -105,7 +105,7 @@ class ValidationService:
             for error in e.errors():
                 field = error.get('loc', ['unknown'])[0]
                 msg = error.get('msg', 'Validation error')
-                errors.append(f"{field}: {msg}")
+                errors.append(f'{field}: {msg}')
 
         if errors:
             return ValidationResult(is_valid=False, errors=errors, warnings=warnings)

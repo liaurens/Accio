@@ -1,5 +1,12 @@
 classdef MainModelStep < runner.BaseStep & logging.Loggable
-    % Step class for core model calculations
+    % Main calculation/model step
+    %
+    % This is where your core logic goes. Use it to:
+    % - Perform calculations
+    % - Run simulations
+    % - Process data
+    %
+    % See also runner.BaseStep, {{ tool_name }}
 
     methods
 
@@ -11,19 +18,23 @@ classdef MainModelStep < runner.BaseStep & logging.Loggable
         end
 
         function str = print_label(~)
-            str = 'Main calculation model';
+            str = 'Main model calculation';
         end
 
         function run(Obj)
             Inputs = Obj.get(Obj.InputKeys.Inputs);
 
-            Obj.Logger.info('Running logic...');
+            Obj.Logger.info('Running main model...');
 
-            % Implement your core logic here
-            % Results = some_calculation(Inputs);
-
+            % === YOUR CODE HERE ===
+            % Implement your core calculation logic
+            %
+            % Example:
+            % Results = struct();
+            % Results.output = my_calculation(Inputs.parameter);
             % Obj.set({{ tool_package }}.DataKeys.Results, Results);
         end
 
     end
+
 end

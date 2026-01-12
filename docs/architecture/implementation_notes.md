@@ -483,6 +483,116 @@ Category (default: general): _
 
 ---
 
+### 9. ValidationService with Pydantic (`toolwizard/services/validation_service.py`)
+
+**Purpose:** Validates tool input using Pydantic models for robust, type-safe validation.
+
+**Key Features:**
+- Pydantic BaseModel with field validators
+- Automatic whitespace stripping
+- Semantic version format validation
+- Language support validation
+- Partial validation for real-time feedback
+- Detailed error messages with field context
+
+**ToolValidator Model:**
+
+```python
+from pydantic import BaseModel, Field, ValidationError, field_validator
+
+class ToolValidator(BaseModel):
+    """Pydantic model for validating Tool input."""
+
+    tool_name: str = Field(..., min_length=1, description='Name of the tool')
+    description: str = Field(..., min_length=10, description='Tool description')
+    author: str = Field(..., min_length=1, description='Tool author')
+    output_types: str = Field(default='none', description='Output file types')
+    language: str = Field(default='matlab', description='Target language')
+    category: str = Field(default='general', description='Tool category')
+    version: str = Field(default='1.0.0', description='Tool version')
+    input_types: str = Field(default='none', description='Input file types')
+```
+
+**Field Validators:**
+
+| Field | Validation Rules |
+|-------|------------------|
+| `tool_name` | Required, must start with letter, no spaces, alphanumeric + underscore only |
+| `description` | Required, minimum 10 characters |
+| `author` | Required, non-empty after stripping whitespace |
+| `version` | Semantic versioning format (X.Y or X.Y.Z, numeric parts only) |
+| `language` | Must be 'matlab' or 'python', normalized to lowercase |
+
+**Validator Implementation Examples:**
+
+```python
+@field_validator('tool_name')
+@classmethod
+def validate_tool_name(cls, v: str) -> str:
+    """Validate tool name format."""
+    if not v or not v.strip():
+        raise ValueError('Tool name is required')
+    v = v.strip()
+    if not v[0].isalpha():
+        raise ValueError('Tool name must start with a letter')
+    if ' ' in v:
+        raise ValueError('Tool name cannot contain spaces')
+    if not all(c.isalnum() or c == '_' for c in v):
+        raise ValueError('Tool name can only contain alphanumeric characters and underscores')
+    return v
+
+@field_validator('version')
+@classmethod
+def validate_version(cls, v: str) -> str:
+    """Validate semantic version format."""
+    if not v:
+        return '1.0.0'
+    parts = v.split('.')
+    if len(parts) < 2 or len(parts) > 3:
+        raise ValueError('Version must be in format X.Y or X.Y.Z')
+    for part in parts:
+        if not part.isdigit():
+            raise ValueError('Version parts must be numeric')
+    return v
+```
+
+**ValidationService Usage:**
+
+```python
+class ValidationService:
+    def validate(self, tool: Tool) -> ValidationResult:
+        """Full validation of a Tool instance."""
+        errors: list[str] = []
+        try:
+            ToolValidator(
+                tool_name=tool.tool_name,
+                description=tool.description,
+                author=tool.author,
+                # ... other fields
+            )
+        except ValidationError as e:
+            for error in e.errors():
+                field = error.get('loc', ['unknown'])[0]
+                msg = error.get('msg', 'Validation error')
+                errors.append(f"{field}: {msg}")
+
+        return ValidationResult(is_valid=len(errors) == 0, errors=errors)
+
+    def validate_partial(self, **kwargs: str) -> ValidationResult:
+        """Validate individual fields for real-time feedback."""
+        # Validates only the fields provided
+        # Useful for field-by-field validation in UI
+```
+
+**Benefits of Pydantic Approach:**
+- **Type Safety**: Automatic type coercion and validation
+- **Declarative**: Validation rules defined in model, not scattered in code
+- **Detailed Errors**: Structured error messages with field location
+- **Extensible**: Easy to add new validators or modify rules
+- **Standards-Based**: Follows Python data validation best practices
+
+---
+
 ## Data Flow
 
 ```
@@ -541,6 +651,7 @@ On any error during generation:
 |---------|---------|---------|
 | jinja2 | 3.x | Template rendering |
 | pyyaml | 6.x | YAML config loading |
+| pydantic | 2.x | Data validation with field validators |
 | pytest | 8.x | Testing (dev only) |
 
 ---

@@ -32,7 +32,7 @@ class ConfigManager:
                 'config' / 'config.yaml'
 
         if not path.exists():
-            raise FileNotFoundError(f"Config file not found: {path}")
+            raise FileNotFoundError(f'Config file not found: {path}')
 
         with open(path, 'r', encoding='utf-8') as f:
             loaded_config: dict[str, Any] = yaml.safe_load(f)

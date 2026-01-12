@@ -1,0 +1,57 @@
+classdef PostLoadManipulations < handle
+    % PostLoadManipulations - Data transformations after loading
+    %
+    % This class performs data manipulations on {{ tool_name }} inputs
+    % after they have been loaded but before parsing.
+    %
+    % See also {{ tool_name }}, get_schema, PostLoadChecks
+
+    properties
+        Inputs  % Input data structure
+    end
+
+    methods
+        function Obj = PostLoadManipulations(options)
+            % Constructor
+            arguments
+                options.Inputs = struct()
+            end
+            Obj.Inputs = options.Inputs;
+        end
+
+        function Inputs = run(Obj)
+            % Execute all post-load manipulations
+            %
+            % Add your transformation logic here. This runs after inputs
+            % are loaded but before they are parsed.
+            %
+            % Returns:
+            %   Inputs - Modified input structure
+
+            % Example manipulations:
+            % Obj.expand_relative_paths();
+            % Obj.apply_default_values();
+
+            Inputs = Obj.Inputs;
+        end
+    end
+
+    methods (Access = private)
+        % Add private manipulation methods here
+
+        % function expand_relative_paths(Obj)
+        %     % Convert relative paths to absolute paths
+        %     % if ~isempty(Obj.Inputs.somePath)
+        %     %     Obj.Inputs.somePath = fullfile(pwd, Obj.Inputs.somePath);
+        %     % end
+        % end
+
+        % function apply_default_values(Obj)
+        %     % Apply default values for optional inputs
+        %     % if ~isfield(Obj.Inputs, 'optionalParam')
+        %     %     Obj.Inputs.optionalParam = 'default';
+        %     % end
+        % end
+    end
+
+end

@@ -1,0 +1,49 @@
+classdef PostParseChecks < handle
+    % PostParseChecks - Validation checks after parsing input data
+    %
+    % This class performs validation checks on {{ tool_name }} inputs
+    % after they have been parsed and validated against the schema.
+    %
+    % See also {{ tool_name }}, get_schema, PostLoadChecks
+
+    properties
+        Inputs  % Parsed input data structure
+    end
+
+    methods
+        function Obj = PostParseChecks(options)
+            % Constructor
+            arguments
+                options.Inputs = struct()
+            end
+            Obj.Inputs = options.Inputs;
+        end
+
+        function run(Obj)
+            % Execute all post-parse checks
+            %
+            % Add your validation logic here. This runs after inputs
+            % have been parsed and schema validation is complete.
+
+            % Example checks:
+            % Obj.check_cross_field_constraints();
+            % Obj.check_file_compatibility();
+        end
+    end
+
+    methods (Access = private)
+        % Add private validation methods here
+
+        % function check_cross_field_constraints(Obj)
+        %     % Verify constraints between multiple fields
+        %     % assert(Obj.Inputs.endDate > Obj.Inputs.startDate, ...
+        %     %     'End date must be after start date');
+        % end
+
+        % function check_file_compatibility(Obj)
+        %     % Verify input files are compatible with each other
+        %     % Check file formats, dimensions, etc.
+        % end
+    end
+
+end

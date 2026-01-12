@@ -52,10 +52,12 @@ class TestMATLABAdapter:
 
         assert isinstance(templates, list)
         assert len(templates) > 0
+        # Base templates
         assert 'tool_main.m' in templates
         assert 'contents.m' in templates
+        # Optional templates
         assert 'datakeys.m' in templates
-        assert 'test_main.m' in templates
+        assert 'schema.m' in templates
 
     def test_get_template_mappings(
         self, adapter: MATLABAdapter, sample_tool: Tool

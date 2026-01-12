@@ -1,0 +1,56 @@
+classdef PostParseManipulations < handle
+    % PostParseManipulations - Data transformations after parsing
+    %
+    % This class performs data manipulations on {{ tool_name }} inputs
+    % after they have been parsed and validated against the schema.
+    %
+    % See also {{ tool_name }}, get_schema, PostLoadManipulations
+
+    properties
+        Inputs  % Parsed input data structure
+    end
+
+    methods
+        function Obj = PostParseManipulations(options)
+            % Constructor
+            arguments
+                options.Inputs = struct()
+            end
+            Obj.Inputs = options.Inputs;
+        end
+
+        function Inputs = run(Obj)
+            % Execute all post-parse manipulations
+            %
+            % Add your transformation logic here. This runs after inputs
+            % have been parsed and schema validation is complete.
+            %
+            % Returns:
+            %   Inputs - Modified input structure
+
+            % Example manipulations:
+            % Obj.compute_derived_values();
+            % Obj.normalize_units();
+
+            Inputs = Obj.Inputs;
+        end
+    end
+
+    methods (Access = private)
+        % Add private manipulation methods here
+
+        % function compute_derived_values(Obj)
+        %     % Compute values derived from other inputs
+        %     % Obj.Inputs.totalArea = Obj.Inputs.length * Obj.Inputs.width;
+        % end
+
+        % function normalize_units(Obj)
+        %     % Convert inputs to standard units
+        %     % if strcmp(Obj.Inputs.units, 'mm')
+        %     %     Obj.Inputs.value = Obj.Inputs.value / 1000;
+        %     %     Obj.Inputs.units = 'm';
+        %     % end
+        % end
+    end
+
+end

@@ -24,12 +24,14 @@ class FileGenerator:
         tool: Tool,
         adapter: MATLABAdapter,
         output_dir: Path,
+        optional_templates: list[str] | None = None,
     ) -> GenerationResult:
         """Generate a complete tool structure.
 
         :param tool: Tool metadata
         :param adapter: Language adapter for folder/file structure
         :param output_dir: Base output directory
+        :param optional_templates: List of optional template names to include
         :returns: GenerationResult with success status and created files
         """
         errors: list[str] = []
@@ -46,7 +48,8 @@ class FileGenerator:
                     errors=['Failed to create directory structure'],
                 )
 
-            template_mappings = adapter.get_template_mappings(tool)
+            template_mappings = adapter.get_template_mappings(
+                tool, optional_templates)
             context = adapter.get_template_context(tool)
 
             templates_dir = self._config.get_templates_dir()
@@ -60,7 +63,7 @@ class FileGenerator:
                 output_path = output_dir / mapping.output_path
 
                 if not template_path.exists():
-                    errors.append(f"Template not found: {template_path}")
+                    errors.append(f'Template not found: {template_path}')
                     continue
 
                 try:
@@ -70,8 +73,8 @@ class FileGenerator:
                     output_path.write_text(content, encoding='utf-8')
                     files_created.append(output_path)
                 except Exception as e:
-                    errors.append(f"Failed to render {
-                                  mapping.template_name}: {e}")
+                    errors.append(
+                        f'Failed to render {mapping.template_name}: {e}')
 
             tool_output_path = output_dir / tool.tool_name
             return GenerationResult(
@@ -100,7 +103,7 @@ class FileGenerator:
                 path.mkdir(parents=True, exist_ok=True)
                 self._created_paths.append(path)
             return True
-        except OSError as e:
+        except OSError:
             return False
 
     def write_files(self, files: dict[Path, str]) -> bool:
